@@ -12,33 +12,19 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using System.Diagnostics;
-using Microsoft.Data.Sqlite;
-using Windows.Web.Http;
-using Windows.UI.ViewManagement;
 
-
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
+// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace MangaEdenClient
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class MangaPage : Page
     {
-        public MainPage()
+        public MangaPage()
         {
-            Debug.WriteLine("test");
             this.InitializeComponent();
-
-            //ApplicationView.PreferredLaunchViewSize = new Size(1280, 720);
-            //ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
-        }
-
-        private void button_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }
