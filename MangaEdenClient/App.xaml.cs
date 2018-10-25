@@ -32,7 +32,7 @@ namespace MangaEdenClient
             this.InitializeComponent();
             this.Suspending += OnSuspending;
 
-            ApplicationView.PreferredLaunchViewSize = new Size(720, 1280);
+            ApplicationView.PreferredLaunchViewSize = new Size(1024, 768);
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
         }
 

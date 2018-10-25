@@ -16,6 +16,8 @@ using System.Diagnostics;
 using Microsoft.Data.Sqlite;
 using Windows.Web.Http;
 using Windows.UI.ViewManagement;
+using Windows.UI;
+using Windows.ApplicationModel.Core;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -32,13 +34,13 @@ namespace MangaEdenClient
             Debug.WriteLine("test");
             this.InitializeComponent();
 
+            ApplicationViewTitleBar formattableTitleBar = ApplicationView.GetForCurrentView().TitleBar;
+            formattableTitleBar.ButtonBackgroundColor = Colors.Transparent;
+            CoreApplicationViewTitleBar coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
+            coreTitleBar.ExtendViewIntoTitleBar = true;
             //ApplicationView.PreferredLaunchViewSize = new Size(1280, 720);
             //ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
         }
-
-        private void button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
+        
     }
 }

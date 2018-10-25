@@ -7,9 +7,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    <RelativePanel HorizontalAlignment="Center" Height="720" Margin="0,0,0,0" VerticalAlignment="Center" Width="1280">
-        <Rectangle HorizontalAlignment="Center" Height="145" VerticalAlignment="Top" Width="215" Margin="105,175,0,0" Fill="Black"/>
-        <Rectangle HorizontalAlignment="Center" Height="265" VerticalAlignment="Top" Width="75" Margin="565,175,0,0" Fill="#FFB94949"/>
-        <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Height="40" Margin="320,440,0,0" VerticalAlignment="Top" Width="85" Click="button_Click"/>
-    </RelativePanel>
+    <Grid Background="Gray">
+    </Grid>
 </Page>
