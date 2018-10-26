@@ -52,7 +52,7 @@ namespace MangaEdenClient
             HTTP.HttpWrapper.HttpGetImageInBytes("89/895a2f7c551df340121483918440668e585c8a6de6b2300cc6fb2e9d.png", (bitmap) =>
             {
                 Debug.WriteLine("inside image delegate");
-                TestImage.Source = bitmap;
+                //TestImage.Source = bitmap;
                 return true;
             });
             Debug.WriteLine("After 2nd delegate");

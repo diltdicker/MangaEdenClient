@@ -6,33 +6,34 @@ using System.Threading.Tasks;
 
 namespace MangaEdenClient.DAO
 {
-    class MangaTitleDao : IMangaTitleDao
+    class MangaDao : IMangaDao
     {
-        public bool DeleteMangaTitle(string id)
+        public bool DeleteManga(string id)
         {
             throw new NotImplementedException();
         }
 
-        public List<MangaTitle> GetAllMangaTitles()
+        public List<Manga> GetAllMangaTitles()
         {
             throw new NotImplementedException();
         }
 
-        public MangaTitle GetMangaTitle(string id)
+        public Manga GetManga(string id)
         {
             throw new NotImplementedException();
         }
 
-        public bool SaveMangaTile(MangaTitle mangaTitle)
+        public bool SaveManga(Manga manga)
         {
             throw new NotImplementedException();
         }
 
-        //
-        //  Custom methods
-        //
+        public List<Manga> SearchMangaTitles(string title)
+        {
+            throw new NotImplementedException();
+        }
 
-        public List<MangaTitle> SearchMangaTitles(string title)
+        public bool UpdateManga(Manga manga)
         {
             throw new NotImplementedException();
         }

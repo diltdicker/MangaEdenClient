@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Data.Sqlite;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -23,6 +24,18 @@ namespace MangaEdenClient
     /// </summary>
     sealed partial class App : Application
     {
+        public const string APP_DB_STRING = "Filename=MangaEdenClient.sqlite3.db";
+        const string MANGA_TABLE = "CREATE TABLE [IF NOT EXISTS] manga_title_table (" + 
+            "id TEXT PRIMARY KEY," +
+            "title TEXT NOT NULL," +
+            "alias TEXT NOT NULL," +
+            "image BLOB" +
+            "status TEXT NOT NULL CHECK (status IN ('Ongoing', 'Completed'))" +
+            ") [WITHOUT ROWID]";
+        const string MANGA_CHAPTER_TABLE = "";
+        const string USER_TABLE = "";
+        const string MANGA_CATEGORY_TABLE = "";
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -32,6 +45,36 @@ namespace MangaEdenClient
             this.InitializeComponent();
             this.Suspending += OnSuspending;
 
+            //
+            //  SqLite Setup
+            //
+            using (SqliteConnection db = new SqliteConnection(APP_DB_STRING))
+            {
+                db.Open();
+                SqliteCommand createMangaTable = new SqliteCommand(MANGA_TABLE, db);
+                SqliteCommand createMangaChapterTable = new SqliteCommand(MANGA_CHAPTER_TABLE, db);
+                SqliteCommand createUserTable = new SqliteCommand(USER_TABLE, db);
+                SqliteCommand createMangaCategoryTable = new SqliteCommand(MANGA_CATEGORY_TABLE, db);
+                try
+                {
+                    createMangaTable.ExecuteReader();
+                    createMangaChapterTable.ExecuteReader();
+                    createUserTable.ExecuteReader();
+                    createMangaCategoryTable.ExecuteReader();                                            // This Table is not to be used for the time being (more work than i want to put in :( ATM )
+                }
+                catch (SqliteException e)
+                {
+                    // do nothing
+                }
+                finally
+                {
+                    db.Close();
+                }
+            }
+
+            //
+            //  Aplication Resizing
+            //
             ApplicationView.PreferredLaunchViewSize = new Size(1024, 768);
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
         }

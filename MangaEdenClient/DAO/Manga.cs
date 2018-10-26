@@ -4,12 +4,13 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace MangaEdenClient.DAO
 {
-    class MangaTitle
+    class Manga
     {
-        private string ImageString { get; set; }
+        private BitmapImage ImageString { get; set; }
         private string Title { get; set; }
         private string Id { get; set; }
         private string Alias { get; set; }
@@ -19,7 +20,7 @@ namespace MangaEdenClient.DAO
         private double LastDate { get; set; }               // unix epoch timestamp
 
 
-        public MangaTitle(string ImageString, string Title, string Id, string Alias,
+        public Manga(string BitmapImage, string Title, string Id, string Alias,
             string Status, List<String> Categories, bool Completed, double LastDate)
         {
             this.ImageString = ImageString;
@@ -32,7 +33,7 @@ namespace MangaEdenClient.DAO
             this.LastDate = LastDate;
         }
 
-        public MangaTitle(dynamic manga)
+        public Manga(dynamic manga)
         {
             if (manga.a is String)
             {

@@ -18,9 +18,9 @@ namespace MangaEdenClient.HTTP
         private const string _API_STRING = "https://www.mangaeden.com/api/";
         private const string _IMG_STRING = "https://cdn.mangaeden.com/mangasimg/";
 
-        public async static void HttpGetMangaTitleList(int index, int number, Func<List<DAO.MangaTitle>, bool> anonFunc)
+        public async static void HttpGetMangaTitleList(int index, int number, Func<List<DAO.Manga>, bool> anonFunc)
         {
-            List<DAO.MangaTitle> mangas = new List<DAO.MangaTitle>();
+            List<DAO.Manga> mangas = new List<DAO.Manga>();
             Uri uri = new Uri(_API_STRING + "list/0/?p=" + index + "&l=" + number);
             HttpClient client = new HttpClient();
             string response = null;
@@ -36,7 +36,7 @@ namespace MangaEdenClient.HTTP
                 Debug.WriteLine("got JSON");
                 /// TODO Parse JSON
                 dynamic dynmangas = JsonConvert.DeserializeObject(response);
-                DAO.MangaTitle title = new DAO.MangaTitle(dynmangas.manga[0]);
+                DAO.Manga title = new DAO.Manga(dynmangas.manga[0]);
             }
             anonFunc.Invoke(mangas);
         }
