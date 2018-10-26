@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MangaEdenClient.HTTP
+namespace MangaEdenClient.DAO
 {
-    class HttpClient
+    class MangaChapter
     {
     }
 }
