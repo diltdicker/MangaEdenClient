@@ -8,16 +8,42 @@ namespace MangaEdenClient.DAO
 {
     interface IMangaDao
     {
-        List<Manga> GetAllMangaTitles();
+        Task ReadAllMangasAsync(Func<List<Manga>, bool> callback);
 
-        Manga GetManga(string id);
+        Task<List<Manga>> ReadAllMangasAsync();
 
-        Boolean SaveManga(Manga manga);
+        Task ReadMangaAsync(string mangaId, Func<Manga, bool> callback);
 
-        Boolean DeleteManga(string id);
+        Task<Manga> ReadMangaAsync(string mangaId);
 
-        Boolean UpdateManga(Manga manga);
+        Task SearchMangaAsync(string title, Func<List<Manga>, bool> callback);
 
-        List<Manga> SearchMangaTitles(string title);
+        Task<List<Manga>> SearchMangaAsync(string title);
+
+        Task<Boolean> CreateMangaAsync(Manga manga);
+
+        Task<Boolean> DeleteMangaAsync(string mangaId);
+
+        Task<Boolean> UpdateMangaAsync(Manga manga);
+
+        Task<Boolean> MangaExistsAsync(string mangaId);
+
+        Task ReadMangaHistoryAsync(Func<List<Manga>, bool> callback);
+
+        Task<List<Manga>> ReadMangaHistoryAsync();
+
+        Task<Boolean> AddMangaHistoryAsync(string mangaId);
+
+        Task ReadMangaFavoritesAsync(Func<List<Manga>, bool> callback);
+
+        Task<List<Manga>> ReadMangaFavoritesAsync();
+
+        Task<Boolean> AddMangaFavoriteAsync(string mangaId);
+
+        Task<Boolean> DeleteMangaFavoriteAsync(string mangaId);
+
+        Task SearchMangaCategoryAsync(List<String> categories, Func<List<Manga>, bool> callback);
+
+        Task<List<Manga>> SearchMangaCategoryAsync(List<String> categories);
     }
 }

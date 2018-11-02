@@ -95,11 +95,15 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DAO\IMangaChapter.cs" />
     <Compile Include="DAO\IMangaChapterDao.cs" />
     <Compile Include="DAO\IMangaDao.cs" />
     <Compile Include="DAO\Manga.cs" />
     <Compile Include="DAO\MangaChapter.cs" />
+    <Compile Include="DAO\MangaChapterDao.cs" />
     <Compile Include="DAO\MangaDao.cs" />
+    <Compile Include="DAO\MangaStorageChapter.cs" />
+    <Compile Include="DAO\Sanitize.cs" />
     <Compile Include="HTTP\HttpWrapper.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>

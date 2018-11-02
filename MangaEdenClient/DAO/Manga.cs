@@ -10,40 +10,38 @@ namespace MangaEdenClient.DAO
 {
     class Manga
     {
-        private BitmapImage ImageString { get; set; }
-        private string Title { get; set; }
-        private string Id { get; set; }
-        private string Alias { get; set; }
-        private string Status { get; set; }
-        private List<String> Categories { get; set; }
-        private bool Completed { get; set; }                // 1: ongoing 2: completed
-        private double LastDate { get; set; }               // unix epoch timestamp
+        public BitmapImage Image { get; set; }
+        public byte[] ImageByteArray { get; set; }
+        public string Title { get; set; }
+        public string Id { get; set; }
+        public string Alias { get; set; }
+        public string Status { get; set; }
+        public List<String> Categories { get; set; }
+        public List<String> ChapterIds { get; set; }
+        public List<String> ChapterTitles { get; set; }
+        public string Completed { get; set; }                // 1: ongoing 2: completed
+        public double LastDate { get; set; }               // unix epoch timestamp
+        public string Author { get; set; }
+        public string Description { get; set; }
+        public string CreatedDate { get; set; }
+        public int Hits { get; set; }
 
-
-        public Manga(string BitmapImage, string Title, string Id, string Alias,
-            string Status, List<String> Categories, bool Completed, double LastDate)
+        public Manga()
         {
-            this.ImageString = ImageString;
+
+        }
+
+        public Manga(string Title, string Id, string Alias, string Completed)
+        {
             this.Title = Title;
             this.Id = Id;
             this.Alias = Alias;
-            this.Status = Status;
-            this.Categories = Categories;
             this.Completed = Completed;
-            this.LastDate = LastDate;
         }
 
-        public Manga(dynamic manga)
+        public Manga(dynamic dynamic)
         {
-            if (manga.a is String)
-            {
-                Debug.WriteLine("it exists");
-            } else
-            {
-                Debug.WriteLine("doesn't exist");
-            }
-            this.Alias = manga.a;
-            Debug.WriteLine(this.Alias + " : alias");
+
         }
     }
 }

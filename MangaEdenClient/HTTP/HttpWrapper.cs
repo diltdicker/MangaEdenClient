@@ -15,13 +15,20 @@ namespace MangaEdenClient.HTTP
 {
     class HttpWrapper
     {
-        private const string _API_STRING = "https://www.mangaeden.com/api/";
-        private const string _IMG_STRING = "https://cdn.mangaeden.com/mangasimg/";
+        private const string API_STRING = "https://www.mangaeden.com/api/";
+        public const string API_IMG_STRING = "https://cdn.mangaeden.com/mangasimg/";
 
+        /// <summary>
+        /// Depricated test method
+        /// Use: HttpGetMangaListAsync( ... )
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="number"></param>
+        /// <param name="anonFunc"></param>
         public async static void HttpGetMangaTitleList(int index, int number, Func<List<DAO.Manga>, bool> anonFunc)
         {
             List<DAO.Manga> mangas = new List<DAO.Manga>();
-            Uri uri = new Uri(_API_STRING + "list/0/?p=" + index + "&l=" + number);
+            Uri uri = new Uri(API_STRING + "list/0/?p=" + index + "&l=" + number);
             HttpClient client = new HttpClient();
             string response = null;
             try
@@ -34,16 +41,182 @@ namespace MangaEdenClient.HTTP
             if (response != null)
             {
                 Debug.WriteLine("got JSON");
-                /// TODO Parse JSON
-                dynamic dynmangas = JsonConvert.DeserializeObject(response);
-                DAO.Manga title = new DAO.Manga(dynmangas.manga[0]);
+                // TODO Parse JSON
+                dynamic dynMangas = JsonConvert.DeserializeObject(response);
+                DAO.Manga title = new DAO.Manga(dynMangas.manga[0]);
             }
             anonFunc.Invoke(mangas);
         }
 
+        /// <summary>
+        /// Method call to grab manga list via the online api
+        /// Status: 0 = suspended, 1 = ongoing, 2 = completed.
+        /// Last date: unix epoch time.
+        /// </summary>
+        /// <param name="index">Index to start list at. Use -1 to get entire list.</param>
+        /// <param name="listSize">Size of the list to get. Use -1 to get entire list.</param>
+        /// <param name="callback">Callback method to executed afterwards (Ideally on UI). Recieves a List of DAO.Manga as a parameter.</param>
+        public async static void HttpGetMangaListAsync(int index, int listSize, Func<List<DAO.Manga>, bool> callback)
+        {
+            List<DAO.Manga> mangas = new List<DAO.Manga>();
+            Uri uri = new Uri(API_STRING + "list/0/?p=" + index + "&l=" + listSize);
+            HttpClient client = new HttpClient();
+            String response = null;
+            if (index < 0 || listSize < 0)
+            {
+                uri = new Uri(API_STRING + "list/0/");
+            }
+            try
+            {
+                response = await client.GetStringAsync(uri);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.StackTrace);
+            }
+            finally
+            {
+                if (response != null)
+                {
+                    // TODO convert all JSON to List<Manga>
+                    // TODO update entire manga list in DB
+                }
+            }
+            callback.Invoke(mangas);
+        }
+
+        /// <summary>
+        /// Method call to get a single manga
+        /// </summary>
+        /// <param name="mangaId"></param>
+        /// <param name="callback"></param>
+        public async static void HttpGetMangaAsync(string mangaId, Func<DAO.Manga, bool> callback)
+        {
+            DAO.Manga manga = null;
+            Uri uri = new Uri(API_STRING + "manga/" + mangaId);
+            HttpClient client = new HttpClient();
+            String response = null;
+            try
+            {
+                response = await client.GetStringAsync(uri);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.StackTrace);
+            }
+            finally
+            {
+                if (response != null)
+                {
+                    // TODO JSON to Manga
+                }
+            }
+            callback.Invoke(manga);
+        }
+
+        /// <summary>
+        /// Method call to get all the image from a manga chapter
+        /// (This will be all the image strings for the manga chapter)
+        /// </summary>
+        /// <param name="mangaChapter"></param>
+        /// <param name="callback"></param>
+        public async static void HttpGetMangaChapterAsync(DAO.MangaChapter mangaChapter, Func<DAO.MangaChapter, bool> callback)
+        {
+            if (mangaChapter == null || mangaChapter.ChapterId == null)
+            {
+                callback.Invoke(null);
+                return;
+            }
+            Uri uri = new Uri(API_STRING + "chapter/" + mangaChapter.ChapterId);
+            HttpClient client = new HttpClient();
+            String response = null;
+            try
+            {
+                response = await client.GetStringAsync(uri);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.StackTrace);
+            }
+            finally
+            {
+                if (response != null)
+                {
+                    // TODO JSON to MangaChapter
+                }
+            }
+            callback.Invoke(mangaChapter);
+        }
+
+        /// <summary>
+        /// Easy call method for getting a bitmap image from a uri using the image string from a previous api call
+        /// Use this method for getting images that are NOT going to be stored in the database
+        /// </summary>
+        /// <param name="imageString"></param>
+        /// <param name="callback"></param>
+        public async static void HttpGetImageBitmapAsync(string imageString, Func<BitmapImage, bool> callback)
+        {
+            BitmapImage image = null;
+            Uri uri = new Uri(API_IMG_STRING + imageString);
+            HttpClient client = new HttpClient();
+            IBuffer imageBuffer = await client.GetBufferAsync(uri);
+            image = new BitmapImage();
+            await image.SetSourceAsync(imageBuffer.AsStream().AsRandomAccessStream());
+            
+            callback.Invoke(image);
+        }
+
+        /// <summary>
+        /// Method call for getting the byte array of an image
+        /// Use this to store images in the database as a blob
+        /// </summary>
+        /// <param name="imageString"></param>
+        /// <param name="callback"></param>
+        public async static void HttpGetImageByteArrayAsync(string imageString, Func<byte[], bool> callback)
+        {
+            byte[] byteArray = new byte[0];
+            Uri uri = new Uri(API_IMG_STRING + imageString);
+            HttpClient client = new HttpClient();
+
+            //  Clean way of doing it
+            //
+            IBuffer imageBuffer = await client.GetBufferAsync(uri);
+            byteArray = imageBuffer.ToArray();
+
+            //  messy way of doing it
+            //
+            //var imageStream = await client.GetInputStreamAsync(uri);
+            //byteArray = new byte[imageStream.AsStreamForRead().Length];
+            //await imageStream.AsStreamForRead().ReadAsync(byteArray, 0, (int)imageStream.AsStreamForRead().Length);
+
+            callback.Invoke(byteArray);
+        }
+
+        /// <summary>
+        /// Method to get an image buffer that can then be sent to be stored as a byte[].
+        /// Can also be set as the source for a bitmap image.
+        /// </summary>
+        /// <param name="imageString"></param>
+        /// <param name="callback"></param>
+        public async static void HttpGetImageBufferAsync(string imageString, Func<IBuffer, bool> callback)
+        {
+            IBuffer imageBuffer = null;
+            Uri uri = new Uri(API_IMG_STRING + imageString);
+            HttpClient client = new HttpClient();
+            imageBuffer = await client.GetBufferAsync(uri);
+
+            callback.Invoke(imageBuffer);
+        }
+
+        /// <summary>
+        /// Decpricated test method 
+        /// DO NOT USE
+        /// </summary>
+        /// <param name="image"></param>
+        /// <param name="anonFunc"></param>
         public async static void HttpGetImageInBytes(string image, Func<BitmapImage , bool> anonFunc)
         {
-            Uri uri = new Uri(_IMG_STRING + image);
+            Uri uri = new Uri(API_IMG_STRING + image);
             HttpClient client = new HttpClient();
             HttpResponseMessage responseMessage = await client.GetAsync(uri);
             byte[] bytes = new byte[0];
@@ -67,12 +240,5 @@ namespace MangaEdenClient.HTTP
 
             anonFunc.Invoke(bitmap);
         }
-    }
-
-    class ImgBuffer : Windows.Storage.Streams.IBuffer
-    {
-        public uint Capacity => throw new NotImplementedException();
-
-        public uint Length { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 }
