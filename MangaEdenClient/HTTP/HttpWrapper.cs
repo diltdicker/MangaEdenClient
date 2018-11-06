@@ -43,7 +43,7 @@ namespace MangaEdenClient.HTTP
                 Debug.WriteLine("got JSON");
                 // TODO Parse JSON
                 dynamic dynMangas = JsonConvert.DeserializeObject(response);
-                DAO.Manga title = new DAO.Manga(dynMangas.manga[0]);
+                DAO.Manga title = new DAO.Manga();
             }
             anonFunc.Invoke(mangas);
         }
@@ -78,8 +78,16 @@ namespace MangaEdenClient.HTTP
             {
                 if (response != null)
                 {
+                    dynamic jsonMangas = JsonConvert.DeserializeObject(response);
+                    for (int i = 0; i < jsonMangas.manga.Count; i++)
+                    {
+                        DAO.Manga manga = new DAO.Manga();
+                        manga.ImageString = jsonMangas.manga[i].im;
+                        manga.Title = jsonMangas.manga[i].t;
+                        //Debug.WriteLine(API_IMG_STRING + manga.ImageString);
+                        mangas.Add(manga);
+                    }
                     // TODO convert all JSON to List<Manga>
-                    // TODO update entire manga list in DB
                 }
             }
             callback.Invoke(mangas);
@@ -90,9 +98,9 @@ namespace MangaEdenClient.HTTP
         /// </summary>
         /// <param name="mangaId"></param>
         /// <param name="callback"></param>
-        public async static void HttpGetMangaAsync(string mangaId, Func<DAO.Manga, bool> callback)
+        public async static void HttpGetMangaAsync(string mangaId, Func<DAO.MangaStorage, bool> callback)
         {
-            DAO.Manga manga = null;
+            DAO.MangaStorage manga = null;
             Uri uri = new Uri(API_STRING + "manga/" + mangaId);
             HttpClient client = new HttpClient();
             String response = null;

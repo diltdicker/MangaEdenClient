@@ -14,10 +14,9 @@
             <ColumnDefinition Width="150"/>
         </Grid.ColumnDefinitions>
         <StackPanel Name="LeftMenu" Orientation="Vertical" Grid.Column="0" Background="Gray">
-        
         </StackPanel>
-        <!--<Frame Name="MangaFrame" Grid.Column="1"/>-->
-        <Image Name="TestImage" Grid.Column="1"/>
+        <Frame Name="MangaFrame" Grid.Column="1"/>
+        <!--<Image Name="TestImage" Grid.Column="1"/>-->
         <StackPanel Name="RightMenu" Orientation="Vertical" Grid.Column="2" Background="LightGray">
             
         </StackPanel>

@@ -1,5 +1,8 @@
-﻿using System;
+﻿using MangaEdenClient.DAO;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -22,9 +25,34 @@ namespace MangaEdenClient
     /// </summary>
     public sealed partial class TopMenuPage : Page
     {
+        ObservableCollection<Manga> observableManga = new ObservableCollection<Manga>();
+
         public TopMenuPage()
         {
             this.InitializeComponent();
+
+            Debug.WriteLine("Top Menu");
+
+
+            // Get all Manga
+            HTTP.HttpWrapper.HttpGetMangaListAsync(-1, -1, (List<DAO.Manga> mangaList) =>
+            {
+                if (mangaList == null || mangaList.Count == 0)
+                {
+                    return false;
+                }
+                else
+                {
+                    foreach (Manga manga in mangaList)
+                    {
+                        manga.ImageString = HTTP.HttpWrapper.API_IMG_STRING + manga.ImageString;
+                        observableManga.Add(manga);
+                    }
+                    Debug.WriteLine("Finished");
+                    return true;
+                }
+            });
+            Debug.WriteLine("After HttpWrapper");
         }
     }
 }

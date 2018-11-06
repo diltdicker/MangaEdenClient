@@ -42,8 +42,8 @@ namespace MangaEdenClient
             //ApplicationView.PreferredLaunchViewSize = new Size(1280, 720);
             //ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
 
-            
+            // Default switch frame to top menu
+            MangaFrame.Navigate(typeof(TopMenuPage));
         }
-        
     }
 }
