@@ -15,10 +15,9 @@ namespace MangaEdenClient.DAO
         public string Title { get; set; }
         public string Id { get; set; }
         public string Alias { get; set; }
-        public string Status { get; set; }
-        public List<String> Categories { get; set; }
-        public string Completed { get; set; }                // 1: ongoing 2: completed
-        public string LastDate { get; set; }               // unix epoch timestamp
+        public string Status { get; protected set; }        // 1: ongoing 2: completed
+        public List<String> Categories { get; set; }              
+        public string LastDate { get; set; }                // unix epoch timestamp
         public int Hits { get; set; }
 
         public Manga()
@@ -29,9 +28,47 @@ namespace MangaEdenClient.DAO
             Alias = null;
             Status = null;
             Categories = new List<string>();
-            Completed = null;
             LastDate = null;
             Hits = 0;
+        }
+
+        public void SetStatus(int status)
+        {
+            if (status == 0)
+            {
+                this.Status = "Suspended";
+            }
+            else if (status == 1)
+            {
+                this.Status = "Ongoing";
+            }
+            else
+            {
+                this.Status = "Completed";
+            }
+        }
+
+        public void SetLastDate(string lastDate)
+        {
+            if (lastDate != null && lastDate.Length > 0)
+            {
+                this.LastDate = lastDate;
+            }
+        }
+
+        override
+        public string ToString()
+        {
+            return "{\n" +
+                "ImageString: " + ImageString + "\n" +
+                "Title: " + Title + "\n" +
+                "Id: " + Id + "\n" + 
+                "Alias: " + Alias + "\n" +
+                "Status: " + Status + "\n" + 
+                "Categories: " + Categories.ToString() + "\n" +
+                "Last Date: " + LastDate + "\n" +
+                "Hits: " + Hits + "\n" +
+                "}"; 
         }
     }
 }

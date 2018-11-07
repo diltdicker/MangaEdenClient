@@ -25,6 +25,9 @@ namespace MangaEdenClient
     /// </summary>
     sealed partial class App : Application
     {
+        public static bool APP_FULL_FLAG = true;
+        public static int DB_UPDATE_PROGRESS_MAX = 0;
+        public static int DB_UPDATE_PROGRESS_VALUE = 0;
         public const string APP_DB_STRING = "Filename=MangaEdenClient.db.sqlite3";
         public const string APP_MANGA_TABLE = "manga_table";
         public const string APP_MANGA_CHAPTER_TABLE = "manga_chapter_table";
@@ -44,7 +47,7 @@ namespace MangaEdenClient
             "description TEXT," +
             "created_date TEXT," +
             "last_chapter_date TEXT," +
-            "status TEXT NOT NULL CHECK (status IN ('Ongoing', 'Completed'))" +
+            "status TEXT NOT NULL CHECK (status IN ('Suspended', 'Ongoing', 'Completed'))" +
             ") WITHOUT ROWID;";
         const string INIT_MANGA_CHAPTER_TABLE = "CREATE TABLE IF NOT EXISTS " + APP_MANGA_CHAPTER_TABLE + " (" +
             "chapter_id TEXT PRIMARY KEY," +

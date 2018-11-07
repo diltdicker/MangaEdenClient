@@ -81,13 +81,23 @@ namespace MangaEdenClient.HTTP
                     dynamic jsonMangas = JsonConvert.DeserializeObject(response);
                     for (int i = 0; i < jsonMangas.manga.Count; i++)
                     {
-                        DAO.Manga manga = new DAO.Manga();
-                        manga.ImageString = jsonMangas.manga[i].im;
-                        manga.Title = jsonMangas.manga[i].t;
+                        DAO.Manga manga = new DAO.Manga
+                        {
+                            Id = jsonMangas.manga[i].i,
+                            ImageString = jsonMangas.manga[i].im,
+                            Title = jsonMangas.manga[i].t,
+                            Alias = jsonMangas.manga[i].a,
+                            Hits = jsonMangas.manga[i].h,
+                        };
+                        manga.SetLastDate("" + jsonMangas.manga[i].ld);
+                        manga.SetStatus((int)jsonMangas.manga[i].s);
+                        for (int k = 0; k < jsonMangas.manga[i].c.Count; k++)
+                        {
+                            manga.Categories.Add((string)jsonMangas.manga[i].c[k]);
+                        }
                         //Debug.WriteLine(API_IMG_STRING + manga.ImageString);
                         mangas.Add(manga);
                     }
-                    // TODO convert all JSON to List<Manga>
                 }
             }
             callback.Invoke(mangas);
@@ -205,11 +215,20 @@ namespace MangaEdenClient.HTTP
         /// Can also be set as the source for a bitmap image.
         /// </summary>
         /// <param name="imageString"></param>
+        /// <param name="fullUrl">True if imageString is the full URL, False if it is only the image path</param>
         /// <param name="callback"></param>
-        public async static void HttpGetImageBufferAsync(string imageString, Func<IBuffer, bool> callback)
+        public async static void HttpGetImageBufferAsync(string imageString, bool fullUrl, Func<IBuffer, bool> callback)
         {
             IBuffer imageBuffer = null;
-            Uri uri = new Uri(API_IMG_STRING + imageString);
+            Uri uri;
+            if (!fullUrl)
+            {
+                uri = new Uri(API_IMG_STRING + imageString);
+            }
+            else
+            {
+                uri = new Uri(imageString);
+            }
             HttpClient client = new HttpClient();
             imageBuffer = await client.GetBufferAsync(uri);
 

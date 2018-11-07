@@ -13,22 +13,34 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="120"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <GridView Grid.Column="0" Grid.Row="1" ItemsSource="{x:Bind observableManga}">
+        <GridView Name="MangaGrid" Grid.Column="0" Grid.Row="1" ItemsSource="{x:Bind observableManga}" IsItemClickEnabled="True" SelectionChanged="MangaGrid_SelectionChanged">
             <GridView.ItemTemplate>
                 <DataTemplate x:Name="MangaTemplate" x:DataType="dao:Manga">
-                    <StackPanel Orientation="Vertical" Margin="20" Width="200">
-                        <TextBlock Text="{x:Bind Title}"/>
-                        <Image Source="{x:Bind ImageString}"/>
-                    </StackPanel>
+                    <Grid Background="Azure">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="350"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="240"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Row="0" VerticalAlignment="Center" TextAlignment="Center" TextWrapping="WrapWholeWords" Text="{x:Bind Title}" FontWeight="SemiBold"/>
+                        <Image Grid.Row="1" Source="{x:Bind ImageString}"/>
+                    </Grid>
                 </DataTemplate>
             </GridView.ItemTemplate>
-            <GridView.Items>
-                
-            </GridView.Items>
         </GridView>
+        
+        <RelativePanel Grid.Row="2" Background="LightGray">
+            <TextBlock RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.AlignHorizontalCenterWithPanel="True" Text="Donate to some guy!"/>
+            <!--<TextBlock Text="{x:Bind TEST_STRING, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="20, 0, 20, 0"/>-->
+            <ProgressBar Name="DBUpdateProgressBar" Visibility="Collapsed" Maximum="100" Minimum="0" Value="0" Margin="20,20,0,0" Width="200" IsIndeterminate="False"/>
+        </RelativePanel>
+        
     </Grid>
 </Page>

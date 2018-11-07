@@ -14,7 +14,7 @@ namespace MangaEdenClient.DAO
         public string Title { get; set; }
         public string Id { get; set; }
         public string Alias { get; set; }
-        public string Status { get; set; }
+        public string Status { get; protected set; }
         public List<String> Categories { get; set; }
         public List<String> ChapterIds { get; set; }
         public List<String> ChapterTitles { get; set; }
@@ -42,6 +42,22 @@ namespace MangaEdenClient.DAO
             Description = null;
             CreatedDate = null;
             Hits = 0;
+        }
+
+        public void SetCompleted(int status)
+        {
+            if (status == 0)
+            {
+                this.Status = "Suspended";
+            }
+            else if (status == 1)
+            {
+                this.Status = "Ongoing";
+            }
+            else
+            {
+                this.Status = "Completed";
+            }
         }
     }
 }
