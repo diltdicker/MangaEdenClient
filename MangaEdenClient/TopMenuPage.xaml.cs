@@ -35,69 +35,41 @@ namespace MangaEdenClient
 
             Debug.WriteLine("Top Menu");
 
-            //Task.Run(() => TestProgress());
-
-            //TestProgress2(100, (int val, int max) =>
-            //{
-            //    //progress_Max = max;
-
-            //    DBUpdateProgressBar.Maximum = max;
-            //    DBUpdateProgressBar.Value = val;
-            //    Debug.WriteLine("max: " + max + " val: " + val);
-            //    return true;
-            //});
-
-            //TestProgress();
-
-            //progress_Max = 100;
-            //progress_Value = 0;
-            //while (progress_Value < progress_Max + 1)
-            //{
-            //    Debug.WriteLine(TEST_STRING);
-            //    //await Task.Delay(500);
-            //    TEST_STRING = "progress = " + progress_Value;
-            //    progress_Value++;
-            //}
-
-
-
-            if (App.APP_FULL_FLAG)
+            HTTP.HttpWrapper.HttpGetMangaListAsync(-1, -1, (List<DAO.Manga> mangaList) =>
             {
-                App.APP_FULL_FLAG = false;
-                // Get all Manga
-                HTTP.HttpWrapper.HttpGetMangaListAsync(-1, -1, (List<DAO.Manga> mangaList) =>
+                if (mangaList == null || mangaList.Count == 0)
                 {
-                    if (mangaList == null || mangaList.Count == 0)
+                    Debug.WriteLine("Unable to Connect to internet");
+                    return false;
+                }
+                else
+                {
+                    InsertAndSortbyPopular(mangaList);
+                    SortByPopular();
+                    Debug.WriteLine("Finished");
+                    if (App.APP_FULL_FLAG)
                     {
-                        Debug.WriteLine("Unable to Connect to internet");
-                        return false;
-                    }
-                    else
-                    {
-                        foreach (Manga manga in mangaList)
-                        {
-                            manga.ImageString = HTTP.HttpWrapper.API_IMG_STRING + manga.ImageString;
-                            observableManga.Add(manga);
-                        }
-                        Debug.WriteLine("Finished");
+                        App.APP_FULL_FLAG = false;
                         DBUpdateProgressBar.Visibility = Visibility.Visible;
                         DBUpdateProgressBar.Maximum = mangaList.Count - 1;
-                        Task.Run(() => UpdateMangaDB(mangaList));                                       // Runs in Background
+                        Task.Run(() => UpdateMangaDB(mangaList));                               // Runs in Background
+                    }                                
 
-                        return true;
-                    }
-                });
-            }
-            
-            //Debug.WriteLine("After HttpWrapper");
+                    return true;
+                }
+            });
+
+            Debug.WriteLine("After HttpWrapper");
         }
         
         private async Task UpdateMangaDB(List<Manga> mangas)
         {
             //progress_Max = mangas.Count;
             //progress_Value = 0;
+            Debug.WriteLine("Worker thread");
             for (int i = 0; i < mangas.Count; i++)
             {
+                //Debug.WriteLine("Worker thread i: " + i);
                 await new MangaDao().UpdateMangaAsync(mangas[i]);
                 await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
                 {
@@ -148,7 +120,62 @@ namespace MangaEdenClient
             Debug.WriteLine(manga.ToString());
 
             //new DAO.MangaDao().CreateMangaAsync(manga);
-            new DAO.MangaDao().UpdateMangaAsync(manga);
+            //new DAO.MangaDao().UpdateMangaAsync(manga);
+            Frame.Navigate(typeof(MangaPage), manga.Id);
+        }
+
+        private void SortByRecent()
+        {
+            List<Manga> mangas = observableManga.OrderByDescending(manga => manga.LastDate).ToList();
+            observableManga.Clear();
+            foreach (Manga manga in mangas)
+            {
+                observableManga.Add(manga);
+            }
+        }
+
+        private void SortByAlphabet()
+        {
+            List<Manga> mangas = observableManga.OrderBy(manga => manga.Alias).ToList();
+            observableManga.Clear();
+            foreach (Manga manga in mangas)
+            {
+                observableManga.Add(manga);
+            }
+        }
+
+        private void SortByPopular()
+        {
+            List<Manga> mangas = observableManga.OrderByDescending(manga => manga.Hits).ToList();
+            observableManga.Clear();
+            foreach(Manga manga in mangas)
+            {
+                observableManga.Add(manga);
+            }
+        }
+
+        private void InsertAndSortbyPopular(List<Manga> mangas)
+        {
+            foreach(Manga manga in mangas)
+            {
+                observableManga.Add(manga);
+            }
+            SortByPopular();
+        }
+
+        private void SortPopular_Click(object sender, RoutedEventArgs e)
+        {
+            SortByPopular();
+        }
+
+        private void SortAlphabetical_Click(object sender, RoutedEventArgs e)
+        {
+            SortByAlphabet();
+        }
+
+        private void SortRecent_Click(object sender, RoutedEventArgs e)
+        {
+            SortByRecent();
         }
     }
 }

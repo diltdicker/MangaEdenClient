@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -28,6 +29,8 @@ namespace MangaEdenClient
         public static bool APP_FULL_FLAG = true;
         public static int DB_UPDATE_PROGRESS_MAX = 0;
         public static int DB_UPDATE_PROGRESS_VALUE = 0;
+
+        //public static ObservableCollection<Manga> observableManga = new ObservableCollection<Manga>();
         public const string APP_DB_STRING = "Filename=MangaEdenClient.db.sqlite3";
         public const string APP_MANGA_TABLE = "manga_table";
         public const string APP_MANGA_CHAPTER_TABLE = "manga_chapter_table";
@@ -42,6 +45,7 @@ namespace MangaEdenClient
             "manga_title TEXT NOT NULL," +
             "alias TEXT NOT NULL," +
             "image BLOB," +
+            "image_url TEXT," +
             "author TEXT," +
             "hits INTEGER," +
             "description TEXT," +

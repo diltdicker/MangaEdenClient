@@ -14,6 +14,10 @@
             <!--<ColumnDefinition Width="150"/>-->
         </Grid.ColumnDefinitions>
         <StackPanel Name="LeftMenu" Orientation="Vertical" Grid.Column="0" Background="Gray">
+            <RelativePanel Height="200" Background="Beige">
+                <Button Name="BackFrameButton" Click="BackFrameButton_Click" Content="back" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True"/>
+                <Button Name="ForwardFrameButton" Click="ForwardFrameButton_Click" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWithPanel="True" Content="forward"/>
+            </RelativePanel>
         </StackPanel>
         <Frame Name="MangaFrame" Grid.Column="1"/>
         <!--<Image Name="TestImage" Grid.Column="1"/>-->

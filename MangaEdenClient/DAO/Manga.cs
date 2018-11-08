@@ -56,8 +56,22 @@ namespace MangaEdenClient.DAO
             }
         }
 
-        override
-        public string ToString()
+        public BitmapImage getImage()
+        {
+            if (ImageString != null)
+            {
+                //Debug.WriteLine(ImageString);
+                return new BitmapImage(new Uri(ImageString));
+            }
+            else
+            {
+                //(new Uri(AppContext.BaseDirectory + "/Assets/StoreLogo.png")
+                return new BitmapImage();
+            }
+        }
+        
+        
+        override public string ToString()
         {
             return "{\n" +
                 "ImageString: " + ImageString + "\n" +

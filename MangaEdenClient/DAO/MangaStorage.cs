@@ -7,23 +7,23 @@ using Windows.Storage.Streams;
 
 namespace MangaEdenClient.DAO
 {
-    class MangaStorage
+    class MangaStorage : Manga
     {
-        public string ImageString { get; set; }
+        //public string ImageString { get; set; }
         public IBuffer ImageBuffer { get; set; }
-        public string Title { get; set; }
-        public string Id { get; set; }
-        public string Alias { get; set; }
-        public string Status { get; protected set; }
-        public List<String> Categories { get; set; }
+        //public string Title { get; set; }
+        //public string Id { get; set; }
+        //public string Alias { get; set; }
+        //public string Status { get; protected set; }
+        //public List<String> Categories { get; set; }
         public List<String> ChapterIds { get; set; }
         public List<String> ChapterTitles { get; set; }
         public string Completed { get; set; }                // 1: ongoing 2: completed
-        public string LastDate { get; set; }               // unix epoch timestamp
+        //public string LastDate { get; set; }               // unix epoch timestamp
         public string Author { get; set; }
         public string Description { get; set; }
         public string CreatedDate { get; set; }
-        public int Hits { get; set; }
+        //public int Hits { get; set; }
 
         public MangaStorage()
         {

@@ -69,6 +69,7 @@ namespace MangaEdenClient.HTTP
             try
             {
                 response = await client.GetStringAsync(uri);
+                //Debug.WriteLine(response);
             }
             catch (Exception e)
             {
@@ -81,25 +82,30 @@ namespace MangaEdenClient.HTTP
                     dynamic jsonMangas = JsonConvert.DeserializeObject(response);
                     for (int i = 0; i < jsonMangas.manga.Count; i++)
                     {
+                        //Debug.WriteLine("json: i: " + i);
                         DAO.Manga manga = new DAO.Manga
                         {
                             Id = jsonMangas.manga[i].i,
-                            ImageString = jsonMangas.manga[i].im,
                             Title = jsonMangas.manga[i].t,
                             Alias = jsonMangas.manga[i].a,
+                            ImageString = jsonMangas.manga[i].im,
                             Hits = jsonMangas.manga[i].h,
                         };
                         manga.SetLastDate("" + jsonMangas.manga[i].ld);
                         manga.SetStatus((int)jsonMangas.manga[i].s);
+                        if (manga.ImageString != null)
+                        {
+                            manga.ImageString = API_IMG_STRING + manga.ImageString;
+                        }
                         for (int k = 0; k < jsonMangas.manga[i].c.Count; k++)
                         {
                             manga.Categories.Add((string)jsonMangas.manga[i].c[k]);
                         }
-                        //Debug.WriteLine(API_IMG_STRING + manga.ImageString);
                         mangas.Add(manga);
                     }
                 }
             }
+            Debug.WriteLine("mangasSize: " + mangas.Count);
             callback.Invoke(mangas);
         }
 

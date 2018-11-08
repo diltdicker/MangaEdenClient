@@ -25,6 +25,8 @@ namespace MangaEdenClient
         public MangaPage()
         {
             this.InitializeComponent();
+
+            
         }
     }
 }

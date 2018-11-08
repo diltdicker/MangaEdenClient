@@ -47,8 +47,8 @@ namespace MangaEdenClient.DAO
                 SqliteCommand command = new SqliteCommand();
                 command.Connection = db;
 
-                command.CommandText = "INSERT INTO " + App.APP_MANGA_TABLE + " (manga_id, manga_title, alias, status, last_chapter_date, hits) " +
-                    "VALUES (@ID, @TITLE, @ALIAS, @STATUS, @DATE, @HITS);";
+                command.CommandText = "INSERT INTO " + App.APP_MANGA_TABLE + " (manga_id, manga_title, alias, status, last_chapter_date, hits, image_url) " +
+                    "VALUES (@ID, @TITLE, @ALIAS, @STATUS, @DATE, @HITS, @IMAGE);";
                 command.Parameters.AddWithValue("@ID", manga.Id);
                 command.Parameters.AddWithValue("@TITLE", manga.Title);
                 command.Parameters.AddWithValue("@ALIAS", manga.Alias);
@@ -62,6 +62,14 @@ namespace MangaEdenClient.DAO
                     command.Parameters.AddWithValue("@DATE", DBNull.Value);
                 }
                 command.Parameters.AddWithValue("@HITS", manga.Hits);
+                if (manga.ImageString != null)
+                {
+                    command.Parameters.AddWithValue("@IMAGE", manga.ImageString);
+                }
+                else
+                {
+                    command.Parameters.AddWithValue("@IMAGE", DBNull.Value);
+                }
 
                 try
                 {
@@ -353,13 +361,13 @@ namespace MangaEdenClient.DAO
 
                 // UPDATE/INSERT
 
-                
+
                 if (update)
                 {
                     SqliteCommand updateCommand = new SqliteCommand();
                     updateCommand.Connection = db;
-                    updateCommand.CommandText = "UPDATE " + App.APP_MANGA_TABLE + " SET manga_title = @TITLE, alias = @ALIAS, status = @STATUS, last_chapter_date = @DATE, hits = @HITS " + 
-                        "WHERE manga_id = @ID;";
+                    updateCommand.CommandText = "UPDATE " + App.APP_MANGA_TABLE + " SET manga_title = @TITLE, alias = @ALIAS, status = @STATUS, last_chapter_date = @DATE, hits = @HITS, " + 
+                        "image_url = @IMAGE WHERE manga_id = @ID;";
                     updateCommand.Parameters.AddWithValue("@TITLE", manga.Title);
                     updateCommand.Parameters.AddWithValue("@ALIAS", manga.Alias);
                     updateCommand.Parameters.AddWithValue("@STATUS", manga.Status);
@@ -373,6 +381,14 @@ namespace MangaEdenClient.DAO
                     }
                     updateCommand.Parameters.AddWithValue("@HITS", manga.Hits);
                     updateCommand.Parameters.AddWithValue("@ID", manga.Id);
+                    if (manga.ImageString != null)
+                    {
+                        updateCommand.Parameters.AddWithValue("@IMAGE", manga.ImageString);
+                    }
+                    else
+                    {
+                        updateCommand.Parameters.AddWithValue("@IMAGE", DBNull.Value);
+                    }
 
                     //string query = "UPDATE " + App.APP_MANGA_TABLE + " SET manga_title = '" + manga.Title + "', alias = '" + manga.Alias +                // WORKS
                     //    "', status = '" + manga.Status + "', last_chapter_date = '" + manga.LastDate + "', hits = " + manga.Hits + " WHERE " +
@@ -435,8 +451,8 @@ namespace MangaEdenClient.DAO
                     SqliteCommand insertCommand = new SqliteCommand();
                     insertCommand.Connection = db;
 
-                    insertCommand.CommandText = "INSERT INTO " + App.APP_MANGA_TABLE + " (manga_id, manga_title, alias, status, last_chapter_date, hits) " +
-                        "VALUES (@ID, @TITLE, @ALIAS, @STATUS, @DATE, @HITS);";
+                    insertCommand.CommandText = "INSERT INTO " + App.APP_MANGA_TABLE + " (manga_id, manga_title, alias, status, last_chapter_date, hits, image_url) " +
+                        "VALUES (@ID, @TITLE, @ALIAS, @STATUS, @DATE, @HITS, @IMAGE);";
                     insertCommand.Parameters.AddWithValue("@ID", manga.Id);
                     insertCommand.Parameters.AddWithValue("@TITLE", manga.Title);
                     insertCommand.Parameters.AddWithValue("@ALIAS", manga.Alias);
@@ -450,6 +466,14 @@ namespace MangaEdenClient.DAO
                         insertCommand.Parameters.AddWithValue("@DATE", DBNull.Value);
                     }
                     insertCommand.Parameters.AddWithValue("@HITS", manga.Hits);
+                    if (manga.ImageString != null)
+                    {
+                        insertCommand.Parameters.AddWithValue("@IMAGE", manga.ImageString);
+                    }
+                    else
+                    {
+                        insertCommand.Parameters.AddWithValue("@IMAGE", DBNull.Value);
+                    }
 
                     try
                     {

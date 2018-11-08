@@ -9,6 +9,6 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-
+        <!--<Button Name="Home" Click="Home_Click" Content="Home"/>-->
     </Grid>
 </Page>

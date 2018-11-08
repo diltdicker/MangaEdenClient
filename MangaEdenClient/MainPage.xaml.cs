@@ -45,5 +45,21 @@ namespace MangaEdenClient
             // Default switch frame to top menu
             MangaFrame.Navigate(typeof(TopMenuPage));
         }
+
+        private void BackFrameButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (MangaFrame.CanGoBack)
+            {
+                MangaFrame.GoBack();
+            }
+        }
+
+        private void ForwardFrameButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (MangaFrame.CanGoForward)
+            {
+                MangaFrame.GoForward();
+            }
+        }
     }
 }
