@@ -10,18 +10,21 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace MangaEdenClient.DAO
 {
-    class MangaChapter : IMangaChapter
+    class MangaChapter
     {
         private List<BitmapImage> Images { get; set; }
         public string ChapterId { get; set; }
-        public int ChapterNumber { get; set; }
+        public double ChapterNumber { get; set; }
         public string Date { get; set; }
         public string ChapterTitle { get; set; }
-        public string Title { get; set; }
 
         public MangaChapter()
         {
             Images = new List<BitmapImage>();
+            ChapterId = null;
+            ChapterNumber = -1;
+            Date = null;
+            ChapterTitle = null;
         }
 
         /// <summary>
@@ -39,7 +42,7 @@ namespace MangaEdenClient.DAO
             }
         }
 
-        public List<BitmapImage> GetImages()
+        virtual public List<BitmapImage> GetImages()
         {
             return Images;
         }

@@ -32,9 +32,10 @@ namespace MangaEdenClient
         public TopMenuPage()
         {
             this.InitializeComponent();
+        }
 
-            Debug.WriteLine("Top Menu");
-
+        protected override void OnNavigatedTo(NavigationEventArgs e)                            // Happens after TopMenuPage()
+        {
             HTTP.HttpWrapper.HttpGetMangaListAsync(-1, -1, (List<DAO.Manga> mangaList) =>
             {
                 if (mangaList == null || mangaList.Count == 0)
@@ -47,22 +48,20 @@ namespace MangaEdenClient
                     InsertAndSortbyPopular(mangaList);
                     SortByPopular();
                     Debug.WriteLine("Finished");
-                    if (App.APP_FULL_FLAG)
+                    if (App.FULL_UPDATE_FLAG)
                     {
-                        App.APP_FULL_FLAG = false;
+                        App.FULL_UPDATE_FLAG = false;
                         //DBUpdateProgressBar.Visibility = Visibility.Visible;
                         //DBUpdateProgressBar.Maximum = mangaList.Count - 1;
                         MainPage.mainPage.InitProgressBar(mangaList.Count);
                         Task.Run(() => UpdateMangaDB(mangaList));                               // Runs in Background
-                    }                                
+                    }
 
                     return true;
                 }
             });
-
-            Debug.WriteLine("After HttpWrapper");
         }
-        
+
         private async Task UpdateMangaDB(List<Manga> mangas)
         {
             //progress_Max = mangas.Count;

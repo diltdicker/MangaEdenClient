@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -22,11 +23,25 @@ namespace MangaEdenClient
     /// </summary>
     public sealed partial class MangaPage : Page
     {
+        private string MangaId { get; set; }
+        private DAO.MangaStorage StoredManga { get; set; }
+
         public MangaPage()
         {
+            Debug.WriteLine("start of manga page");
             this.InitializeComponent();
-
+            Debug.WriteLine("testing new page");
             //MainPage.mainPage.TestChange();
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)                            // Happens after MangaPage()
+        {
+            MangaId = e.Parameter as string;
+            Debug.WriteLine("Set param");
+
+            HTTP.HttpWrapper.HttpGetMangaAsync(MangaId, (DAO.MangaStorage mangaStorage) => {
+                return true;
+            });
         }
     }
 }

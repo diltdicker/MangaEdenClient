@@ -116,6 +116,7 @@ namespace MangaEdenClient.HTTP
         /// <param name="callback"></param>
         public async static void HttpGetMangaAsync(string mangaId, Func<DAO.MangaStorage, bool> callback)
         {
+            Debug.WriteLine("Get Manga Async");
             DAO.MangaStorage manga = null;
             Uri uri = new Uri(API_STRING + "manga/" + mangaId);
             HttpClient client = new HttpClient();
@@ -132,7 +133,44 @@ namespace MangaEdenClient.HTTP
             {
                 if (response != null)
                 {
-                    // TODO JSON to Manga
+                    dynamic jsonManga = JsonConvert.DeserializeObject(response);
+                    manga = new DAO.MangaStorage
+                    {
+                        Id = mangaId,
+                        Title = jsonManga.title,
+                        Alias = jsonManga.alias,
+                        Author = jsonManga.author,
+                        Description = jsonManga.description
+                    };
+                    manga.SetLastDate("" + jsonManga.last_chapter_date);
+                    string text = "chapter count: " + jsonManga.chapters.Count;
+                    Debug.WriteLine(text);
+                    if (jsonManga.image != null)
+                    {
+                        manga.ImageString = API_IMG_STRING + jsonManga.image;
+                    }
+                    for(int i = 0; i < jsonManga.categories.Count; i++)
+                    {
+                        manga.Categories.Add((string)jsonManga.categories[i]);
+                    }
+                    for(int i = 0; i < jsonManga.chapters.Count; i++)
+                    {
+                        /*
+                         *  0 - chapter # (double)
+                         *  1 - upload date
+                         *  2 - title (string or null)
+                         *  3 - id (string)
+                         */
+                        for(int k = 0; k < jsonManga.chapters[i].Count; k++)
+                        {
+                            text = "i: " + i + " k: " + k + " data: " + jsonManga.chapters[i][k];
+                            Debug.WriteLine(text);
+                        }
+                    }
+                }
+                else
+                {
+                    Debug.WriteLine("failure we'll get em next time");
                 }
             }
             callback.Invoke(manga);

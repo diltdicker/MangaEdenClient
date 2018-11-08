@@ -5,10 +5,22 @@
     xmlns:local="using:MangaEdenClient"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:dao="using:MangaEdenClient.DAO"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <!--<Button Name="Home" Click="Home_Click" Content="Home"/>-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <RelativePanel Grid.Row="1" Background="GhostWhite">
+            <Image Name="MangaImage" Width="300" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True" Margin="20"/>
+            <TextBlock Name="MangaTitle" Text="Default Text" FontWeight="Bold" RelativePanel.AlignVerticalCenterWith="MangaImage" RelativePanel.RightOf="MangaImage" TextWrapping="WrapWholeWords"/>
+        </RelativePanel>
     </Grid>
 </Page>

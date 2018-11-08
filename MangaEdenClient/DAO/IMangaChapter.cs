@@ -10,12 +10,6 @@ namespace MangaEdenClient.DAO
 {
     interface IMangaChapter
     {
-        string ChapterId { get; set; }
-        int ChapterNumber { get; set; }
-        string Date { get; set; }
-        string ChapterTitle { get; set; }
-        string Title { get; set; }
-
         void SetImages(List<IBuffer> imageBufferArray);
 
         List<BitmapImage> GetImages();

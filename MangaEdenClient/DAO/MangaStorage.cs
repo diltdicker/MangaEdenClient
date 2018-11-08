@@ -16,8 +16,7 @@ namespace MangaEdenClient.DAO
         //public string Alias { get; set; }
         //public string Status { get; protected set; }
         //public List<String> Categories { get; set; }
-        public List<String> ChapterIds { get; set; }
-        public List<String> ChapterTitles { get; set; }
+        public List<MangaChapter> Chapters { get; set; }
         public string Completed { get; set; }                // 1: ongoing 2: completed
         //public string LastDate { get; set; }               // unix epoch timestamp
         public string Author { get; set; }
@@ -25,7 +24,7 @@ namespace MangaEdenClient.DAO
         public string CreatedDate { get; set; }
         //public int Hits { get; set; }
 
-        public MangaStorage()
+        public MangaStorage() : base()
         {
             ImageString = null;
             ImageBuffer = null;
@@ -34,8 +33,7 @@ namespace MangaEdenClient.DAO
             Alias = null;
             Status = null;
             Categories = new List<string>();
-            ChapterIds = new List<string>();
-            ChapterTitles = new List<string>();
+            Chapters = new List<MangaChapter>();
             Completed = null;
             LastDate = null;
             Author = null;
