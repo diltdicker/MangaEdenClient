@@ -26,7 +26,7 @@ namespace MangaEdenClient
         {
             this.InitializeComponent();
 
-            
+            //MainPage.mainPage.TestChange();
         }
     }
 }

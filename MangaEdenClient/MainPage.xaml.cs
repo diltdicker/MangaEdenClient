@@ -30,8 +30,11 @@ namespace MangaEdenClient
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        public static MainPage mainPage;
+
         public MainPage()
         {
+            mainPage = this;
             Debug.WriteLine("test");
             this.InitializeComponent();
 
@@ -59,6 +62,22 @@ namespace MangaEdenClient
             if (MangaFrame.CanGoForward)
             {
                 MangaFrame.GoForward();
+            }
+        }
+
+        public void InitProgressBar(int maxValue)
+        {
+            DBUpdateProgress.Visibility = Visibility.Visible;
+            DBUpdateProgress.Maximum = maxValue - 1;
+            DBUpdateProgress.Value = 0;
+        }
+
+        public void UpdateProgress(int value)
+        {
+            DBUpdateProgress.Value = value;
+            if (value >= DBUpdateProgress.Maximum)
+            {
+                DBUpdateProgress.Visibility = Visibility.Collapsed;
             }
         }
     }

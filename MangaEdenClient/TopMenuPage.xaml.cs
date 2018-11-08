@@ -50,8 +50,9 @@ namespace MangaEdenClient
                     if (App.APP_FULL_FLAG)
                     {
                         App.APP_FULL_FLAG = false;
-                        DBUpdateProgressBar.Visibility = Visibility.Visible;
-                        DBUpdateProgressBar.Maximum = mangaList.Count - 1;
+                        //DBUpdateProgressBar.Visibility = Visibility.Visible;
+                        //DBUpdateProgressBar.Maximum = mangaList.Count - 1;
+                        MainPage.mainPage.InitProgressBar(mangaList.Count);
                         Task.Run(() => UpdateMangaDB(mangaList));                               // Runs in Background
                     }                                
 
@@ -73,33 +74,11 @@ namespace MangaEdenClient
                 await new MangaDao().UpdateMangaAsync(mangas[i]);
                 await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
                 {
-                    DBUpdateProgressBar.Value = i;
-                    if (DBUpdateProgressBar.Value == DBUpdateProgressBar.Maximum)
-                    {
-                        DBUpdateProgressBar.Visibility = Visibility.Collapsed;
-                    }
+                    MainPage.mainPage.UpdateProgress(i);
                 });
             }
             Debug.WriteLine("After DB Update Loop");
         }
-
-        //private async Task TestProgress()
-        //{
-        //    progress_Max = 100;
-        //    progress_Value = 0;
-        //    DBUpdateProgressBar.Visibility = Visibility.Visible;
-        //    while (progress_Value < progress_Max + 1)
-        //    {
-        //        Debug.WriteLine(TEST_STRING);
-        //        await Task.Delay(500);
-        //        TEST_STRING = "progress = " + progress_Value;
-        //        progress_Value++;
-        //        if (progress_Value % 5 == 0)
-        //        {
-        //            //ProgressBar_ValueChanged(null, null);
-        //        }
-        //    }    
-        //}
 
         private async void TestProgress2(int max, Func<int, int, bool> calllback)
         {

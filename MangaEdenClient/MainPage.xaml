@@ -13,12 +13,21 @@
             <ColumnDefinition Width="*"/>
             <!--<ColumnDefinition Width="150"/>-->
         </Grid.ColumnDefinitions>
-        <StackPanel Name="LeftMenu" Orientation="Vertical" Grid.Column="0" Background="Gray">
-            <RelativePanel Height="200" Background="Beige">
+        <Grid Name="LeftMenu" Background="Gray">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="200"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <RelativePanel Grid.Row="0" Background="Beige">
                 <Button Name="BackFrameButton" Click="BackFrameButton_Click" Content="back" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True"/>
                 <Button Name="ForwardFrameButton" Click="ForwardFrameButton_Click" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWithPanel="True" Content="forward"/>
             </RelativePanel>
-        </StackPanel>
+            <ProgressBar Grid.Row="2" Name="DBUpdateProgress" Maximum="0" Minimum="0" Value="0" Visibility="Collapsed" Margin="20,0,20,0" VerticalAlignment="Center"/>
+        </Grid>
         <Frame Name="MangaFrame" Grid.Column="1"/>
         <!--<Image Name="TestImage" Grid.Column="1"/>-->
         <!--<StackPanel Name="RightMenu" Orientation="Vertical" Grid.Column="2" Background="LightGray">
