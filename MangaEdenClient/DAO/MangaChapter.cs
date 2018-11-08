@@ -31,13 +31,13 @@ namespace MangaEdenClient.DAO
         /// Method to set the array of images for a chapter
         /// </summary>
         /// <param name="imageBufferArray">Must be in chronological order</param>
-        public void SetImages(List<IBuffer> imageBufferArray)
+        public async void SetImages(List<IBuffer> imageBufferArray)
         {
             Images = new List<BitmapImage>();
             foreach (IBuffer imageBuffer in imageBufferArray)
             {
                 BitmapImage image = new BitmapImage();
-                image.SetSource(imageBuffer.AsStream().AsRandomAccessStream());
+                await image.SetSourceAsync(imageBuffer.AsStream().AsRandomAccessStream());
                 Images.Add(image);
             }
         }
@@ -50,6 +50,21 @@ namespace MangaEdenClient.DAO
         public int GetImageListCount()
         {
             return Images.Count;
+        }
+
+        public string GetDate()
+        {
+            if (Date != null)
+            {
+                DateTime time = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+                time = time.AddSeconds(long.Parse(this.Date));
+                //return time.Month + "/" + time.Date + "/" + time.Year;
+                return time.ToShortDateString();
+            }
+            else
+            {
+                return "";
+            }
         }
     }
 }

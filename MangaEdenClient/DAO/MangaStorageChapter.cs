@@ -32,18 +32,18 @@ namespace MangaEdenClient.DAO
             return images;
         }
 
-        public int GetImageListCount()
-        {
-            return ImageByteArrays.Count;
-        }
+        //public int GetImageListCount()
+        //{
+        //    return ImageByteArrays.Count;
+        //}
 
-        public void SetImages(List<IBuffer> imageBufferArray)
-        {
-            ImageByteArrays = new List<byte[]>();
-            foreach (IBuffer imageBuffer in imageBufferArray)
-            {
-                ImageByteArrays.Add(imageBuffer.ToArray());
-            }
-        }
+        //public void SetImages(List<IBuffer> imageBufferArray)
+        //{
+        //    ImageByteArrays = new List<byte[]>();
+        //    foreach (IBuffer imageBuffer in imageBufferArray)
+        //    {
+        //        ImageByteArrays.Add(imageBuffer.ToArray());
+        //    }
+        //}
     }
 }

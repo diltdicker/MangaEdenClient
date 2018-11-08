@@ -18,9 +18,37 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <RelativePanel Grid.Row="1" Background="GhostWhite">
-            <Image Name="MangaImage" Width="300" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True" Margin="20"/>
-            <TextBlock Name="MangaTitle" Text="Default Text" FontWeight="Bold" RelativePanel.AlignVerticalCenterWith="MangaImage" RelativePanel.RightOf="MangaImage" TextWrapping="WrapWholeWords"/>
-        </RelativePanel>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Orientation="Vertical" Height="auto">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Image Grid.Column="0" Name="MangaImage" Width="300" Margin="20"/>
+                    <TextBlock Grid.Column="1" Name="MangaTitle" FontWeight="Bold"  Margin="40,0,20,0" TextWrapping="WrapWholeWords" VerticalAlignment="Center" FontSize="32"/>
+                </Grid>
+                <StackPanel Orientation="Vertical" Height="auto">
+                    <TextBlock Name="MangaDescription" TextWrapping="WrapWholeWords" Margin="20"/>
+                    <ListView Name="MangaChapterList" Height="auto" ItemsSource="{x:Bind observableMangaChapters}" IsItemClickEnabled="True" SelectionChanged="MangaChapterList_SelectionChanged">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:Name="MangaChapterTemplate" x:DataType="dao:MangaChapter">
+                                <StackPanel Orientation="Horizontal" Height="50">
+                                    <TextBlock Text="{x:Bind ChapterNumber}" Margin="20,0,20,0" VerticalAlignment="Center" TextAlignment="Left" MinWidth="25"/>
+                                    <TextBlock Text="{x:Bind ChapterTitle}" Margin="20,0,20,0" VerticalAlignment="Center" TextAlignment="Left" MinWidth="50"/>
+                                    <TextBlock Text="{x:Bind GetDate()}" Margin="20,0,20,0" VerticalAlignment="Center" TextAlignment="Right" MinWidth="50"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>
+
+
+

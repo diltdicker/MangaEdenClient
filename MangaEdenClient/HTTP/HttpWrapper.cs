@@ -142,9 +142,13 @@ namespace MangaEdenClient.HTTP
                         Author = jsonManga.author,
                         Description = jsonManga.description
                     };
+                    manga.Description = manga.Description.Replace("&#039;", "'");
+                    //string text = "Early D: " + jsonManga.description;
+                    //Debug.WriteLine(text);
                     manga.SetLastDate("" + jsonManga.last_chapter_date);
-                    string text = "chapter count: " + jsonManga.chapters.Count;
-                    Debug.WriteLine(text);
+                    //text = "chapter count: " + jsonManga.chapters.Count;
+                    //Debug.WriteLine(text);
+                    manga.SetStatus((int)jsonManga.status);
                     if (jsonManga.image != null)
                     {
                         manga.ImageString = API_IMG_STRING + jsonManga.image;
@@ -161,16 +165,27 @@ namespace MangaEdenClient.HTTP
                          *  2 - title (string or null)
                          *  3 - id (string)
                          */
-                        for(int k = 0; k < jsonManga.chapters[i].Count; k++)
+                        DAO.MangaChapter chapter = new DAO.MangaChapter
                         {
-                            text = "i: " + i + " k: " + k + " data: " + jsonManga.chapters[i][k];
-                            Debug.WriteLine(text);
+                            ChapterId = jsonManga.chapters[i][3],
+                            ChapterNumber = jsonManga.chapters[i][0],
+                            Date = "" + jsonManga.chapters[i][1],
+                            ChapterTitle = jsonManga.chapters[i][2]                                             // May be null
+                        };
+                        if (chapter.ChapterTitle == null)
+                        {
+                            chapter.ChapterTitle = manga.Title + " : Chapter " + chapter.ChapterNumber;
                         }
+                        manga.Chapters.Add(chapter);
+                    }
+                    if (manga.ImageString != null)
+                    {
+                        manga.ImageBuffer = await client.GetBufferAsync(new Uri(manga.ImageString));
                     }
                 }
                 else
                 {
-                    Debug.WriteLine("failure we'll get em next time");
+                    Debug.WriteLine("mission failed, we'll get em next time");
                 }
             }
             callback.Invoke(manga);
