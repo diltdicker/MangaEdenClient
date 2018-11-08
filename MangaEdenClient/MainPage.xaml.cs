@@ -18,6 +18,7 @@ using Windows.Web.Http;
 using Windows.UI.ViewManagement;
 using Windows.UI;
 using Windows.ApplicationModel.Core;
+using MangaEdenClient.DAO;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -29,8 +30,11 @@ namespace MangaEdenClient
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        public static MainPage mainPage;
+
         public MainPage()
         {
+            mainPage = this;
             Debug.WriteLine("test");
             this.InitializeComponent();
 
@@ -40,7 +44,41 @@ namespace MangaEdenClient
             coreTitleBar.ExtendViewIntoTitleBar = true;
             //ApplicationView.PreferredLaunchViewSize = new Size(1280, 720);
             //ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
+
+            // Default switch frame to top menu
+            MangaFrame.Navigate(typeof(TopMenuPage));
         }
-        
+
+        private void BackFrameButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (MangaFrame.CanGoBack)
+            {
+                MangaFrame.GoBack();
+            }
+        }
+
+        private void ForwardFrameButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (MangaFrame.CanGoForward)
+            {
+                MangaFrame.GoForward();
+            }
+        }
+
+        public void InitProgressBar(int maxValue)
+        {
+            DBUpdateProgress.Visibility = Visibility.Visible;
+            DBUpdateProgress.Maximum = maxValue - 1;
+            DBUpdateProgress.Value = 0;
+        }
+
+        public void UpdateProgress(int value)
+        {
+            DBUpdateProgress.Value = value;
+            if (value >= DBUpdateProgress.Maximum)
+            {
+                DBUpdateProgress.Visibility = Visibility.Collapsed;
+            }
+        }
     }
 }
