@@ -116,6 +116,7 @@ namespace MangaEdenClient.HTTP
         /// <param name="callback"></param>
         public async static void HttpGetMangaAsync(string mangaId, Func<DAO.MangaStorage, bool> callback)
         {
+            Debug.WriteLine("Get Manga Async");
             DAO.MangaStorage manga = null;
             Uri uri = new Uri(API_STRING + "manga/" + mangaId);
             HttpClient client = new HttpClient();
@@ -132,7 +133,59 @@ namespace MangaEdenClient.HTTP
             {
                 if (response != null)
                 {
-                    // TODO JSON to Manga
+                    dynamic jsonManga = JsonConvert.DeserializeObject(response);
+                    manga = new DAO.MangaStorage
+                    {
+                        Id = mangaId,
+                        Title = jsonManga.title,
+                        Alias = jsonManga.alias,
+                        Author = jsonManga.author,
+                        Description = jsonManga.description
+                    };
+                    manga.Description = manga.Description.Replace("&#039;", "'").Replace("&quot;", "\"").Replace("&#333;", "ō");
+                    //string text = "Early D: " + jsonManga.description;
+                    //Debug.WriteLine(text);
+                    manga.SetLastDate("" + jsonManga.last_chapter_date);
+                    //text = "chapter count: " + jsonManga.chapters.Count;
+                    //Debug.WriteLine(text);
+                    manga.SetStatus((int)jsonManga.status);
+                    if (jsonManga.image != null)
+                    {
+                        manga.ImageString = API_IMG_STRING + jsonManga.image;
+                    }
+                    for(int i = 0; i < jsonManga.categories.Count; i++)
+                    {
+                        manga.Categories.Add((string)jsonManga.categories[i]);
+                    }
+                    for(int i = 0; i < jsonManga.chapters.Count; i++)
+                    {
+                        /*
+                         *  0 - chapter # (double)
+                         *  1 - upload date
+                         *  2 - title (string or null)
+                         *  3 - id (string)
+                         */
+                        DAO.MangaChapter chapter = new DAO.MangaChapter
+                        {
+                            ChapterId = jsonManga.chapters[i][3],
+                            ChapterNumber = jsonManga.chapters[i][0],
+                            Date = "" + jsonManga.chapters[i][1],
+                            ChapterTitle = jsonManga.chapters[i][2]                                             // May be null
+                        };
+                        if (chapter.ChapterTitle == null)
+                        {
+                            chapter.ChapterTitle = manga.Title + " : Chapter " + chapter.ChapterNumber;
+                        }
+                        manga.Chapters.Add(chapter);
+                    }
+                    if (manga.ImageString != null)
+                    {
+                        manga.ImageBuffer = await client.GetBufferAsync(new Uri(manga.ImageString));
+                    }
+                }
+                else
+                {
+                    Debug.WriteLine("mission failed, we'll get em next time");
                 }
             }
             callback.Invoke(manga);

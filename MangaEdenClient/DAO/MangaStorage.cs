@@ -1,31 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage.Streams;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace MangaEdenClient.DAO
 {
     class MangaStorage : Manga
     {
-        //public string ImageString { get; set; }
         public IBuffer ImageBuffer { get; set; }
-        //public string Title { get; set; }
-        //public string Id { get; set; }
-        //public string Alias { get; set; }
-        //public string Status { get; protected set; }
-        //public List<String> Categories { get; set; }
-        public List<String> ChapterIds { get; set; }
-        public List<String> ChapterTitles { get; set; }
-        public string Completed { get; set; }                // 1: ongoing 2: completed
-        //public string LastDate { get; set; }               // unix epoch timestamp
+        public List<MangaChapter> Chapters { get; set; }
         public string Author { get; set; }
         public string Description { get; set; }
-        public string CreatedDate { get; set; }
-        //public int Hits { get; set; }
 
-        public MangaStorage()
+        public MangaStorage() : base()
         {
             ImageString = null;
             ImageBuffer = null;
@@ -34,29 +26,26 @@ namespace MangaEdenClient.DAO
             Alias = null;
             Status = null;
             Categories = new List<string>();
-            ChapterIds = new List<string>();
-            ChapterTitles = new List<string>();
-            Completed = null;
+            Chapters = new List<MangaChapter>();
             LastDate = null;
             Author = null;
             Description = null;
-            CreatedDate = null;
             Hits = 0;
         }
 
-        public void SetCompleted(int status)
+        public async void GetImageAsync(Func<BitmapImage, bool> callback)
         {
-            if (status == 0)
+            BitmapImage image = new BitmapImage();
+            if (ImageBuffer != null)
             {
-                this.Status = "Suspended";
-            }
-            else if (status == 1)
-            {
-                this.Status = "Ongoing";
+                await image.SetSourceAsync(this.ImageBuffer.AsStream().AsRandomAccessStream());
+                //return image;
+                callback.Invoke(image);
             }
             else
             {
-                this.Status = "Completed";
+                //return image;
+                callback.Invoke(image);
             }
         }
     }

@@ -26,7 +26,7 @@ namespace MangaEdenClient
     /// </summary>
     sealed partial class App : Application
     {
-        public static bool APP_FULL_FLAG = true;
+        public static bool FULL_UPDATE_FLAG = true;
         public static int DB_UPDATE_PROGRESS_MAX = 0;
         public static int DB_UPDATE_PROGRESS_VALUE = 0;
 
@@ -55,7 +55,7 @@ namespace MangaEdenClient
             ") WITHOUT ROWID;";
         const string INIT_MANGA_CHAPTER_TABLE = "CREATE TABLE IF NOT EXISTS " + APP_MANGA_CHAPTER_TABLE + " (" +
             "chapter_id TEXT PRIMARY KEY," +
-            "chapter_number INTEGER NOT NULL," +
+            "chapter_number REAL NOT NULL," +
             "manga_id TEXT NOT NULL," +
             "date TEXT," +
             "chapter_title TEXT," +

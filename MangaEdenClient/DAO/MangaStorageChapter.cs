@@ -9,21 +9,20 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace MangaEdenClient.DAO
 {
-    class MangaStorageChapter : IMangaChapter
+    class MangaStorageChapter : MangaChapter
     {
         public List<byte[]> ImageByteArrays { get; set; }
-        public string ChapterId { get; set; }
-        public int ChapterNumber { get; set; }
-        public string Date { get; set; }
-        public string ChapterTitle { get; set; }
-        public string Title { get; set; }
 
-        public MangaStorageChapter()
+        public MangaStorageChapter() : base()
         {
             ImageByteArrays = new List<byte[]>();
+            ChapterId = null;
+            ChapterNumber = -1;
+            Date = null;
+            ChapterTitle = null;
         }
 
-        public List<BitmapImage> GetImages()
+        override public List<BitmapImage> GetImages()
         {
             List<BitmapImage> images = new List<BitmapImage>();
             if (ImageByteArrays != null && ImageByteArrays.Count > 0)
@@ -33,18 +32,18 @@ namespace MangaEdenClient.DAO
             return images;
         }
 
-        public int GetImageListCount()
-        {
-            return ImageByteArrays.Count;
-        }
+        //public int GetImageListCount()
+        //{
+        //    return ImageByteArrays.Count;
+        //}
 
-        public void SetImages(List<IBuffer> imageBufferArray)
-        {
-            ImageByteArrays = new List<byte[]>();
-            foreach (IBuffer imageBuffer in imageBufferArray)
-            {
-                ImageByteArrays.Add(imageBuffer.ToArray());
-            }
-        }
+        //public void SetImages(List<IBuffer> imageBufferArray)
+        //{
+        //    ImageByteArrays = new List<byte[]>();
+        //    foreach (IBuffer imageBuffer in imageBufferArray)
+        //    {
+        //        ImageByteArrays.Add(imageBuffer.ToArray());
+        //    }
+        //}
     }
 }
