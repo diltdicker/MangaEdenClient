@@ -192,19 +192,20 @@ namespace MangaEdenClient.HTTP
         }
 
         /// <summary>
-        /// Method call to get all the image from a manga chapter
-        /// (This will be all the image strings for the manga chapter)
+        /// Method call to get all the images from a manga chapter
         /// </summary>
         /// <param name="mangaChapter"></param>
         /// <param name="callback"></param>
-        public async static void HttpGetMangaChapterAsync(DAO.MangaChapter mangaChapter, Func<DAO.MangaChapter, bool> callback)
+        public async static void HttpGetMangaChapterAsync( String mangaChapterId, Func<DAO.MangaChapter, bool> callback)
         {
-            if (mangaChapter == null || mangaChapter.ChapterId == null)
+            DAO.MangaChapter mangaChapter = null;
+            if (mangaChapterId == null)
             {
                 callback.Invoke(null);
                 return;
             }
-            Uri uri = new Uri(API_STRING + "chapter/" + mangaChapter.ChapterId);
+            Debug.WriteLine("URL: " + (API_STRING + "chapter/" + mangaChapterId));
+            Uri uri = new Uri(API_STRING + "chapter/" + mangaChapterId);
             HttpClient client = new HttpClient();
             String response = null;
             try
@@ -219,10 +220,39 @@ namespace MangaEdenClient.HTTP
             {
                 if (response != null)
                 {
-                    // TODO JSON to MangaChapter
+                    /*
+                     *  0 - index
+                     *  1 - image string
+                     */
+                    dynamic jsonChapter = JsonConvert.DeserializeObject(response);
+                    mangaChapter = new DAO.MangaChapter
+                    {
+                        ChapterId = mangaChapterId
+                    };
+                    for (int i = jsonChapter.images.Count - 1; i >= 0; i--)                      // should put it in correct order
+                    {
+                        BitmapImage image = null;
+                        string imageString = jsonChapter.images[i][1];
+                        if (imageString != null)
+                        {
+                            //Debug.WriteLine("full image");
+                            image = new BitmapImage(new Uri(API_IMG_STRING + imageString));
+                        }
+                        else
+                        {
+                            //Debug.WriteLine("empty image");
+                            image = new BitmapImage();
+                        }
+                        mangaChapter.Images.Add(image);
+                    }
                 }
             }
             callback.Invoke(mangaChapter);
+        }
+
+        public async static void HttpGetMangaStorageChapterAsync(string chapterId, Func<DAO.MangaStorageChapter, bool> callback)
+        {
+
         }
 
         /// <summary>

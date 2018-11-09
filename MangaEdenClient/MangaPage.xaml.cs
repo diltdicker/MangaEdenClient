@@ -28,6 +28,7 @@ namespace MangaEdenClient
         private ObservableCollection<DAO.MangaChapter> observableMangaChapters = new ObservableCollection<DAO.MangaChapter>();
         private string MangaId { get; set; }
         private DAO.MangaStorage StoredManga { get; set; }
+        private bool IsFavorite { get; set; }
 
         public MangaPage()
         {
@@ -42,6 +43,10 @@ namespace MangaEdenClient
             MangaId = e.Parameter as string;
             Debug.WriteLine("Set param");
 
+            // TODO Check if Favorite
+            IsFavorite = false;
+            // ELSE
+
             HTTP.HttpWrapper.HttpGetMangaAsync(MangaId, (DAO.MangaStorage mangaStorage) => {
                 if (mangaStorage == null)
                 {
@@ -50,6 +55,7 @@ namespace MangaEdenClient
                 }
                 else
                 {
+                    StoredManga = mangaStorage;
                     MangaTitle.Text = mangaStorage.Title;
                     Debug.WriteLine("Description: " + mangaStorage.Description);
                     MangaDescription.Text = mangaStorage.Description;
@@ -71,7 +77,10 @@ namespace MangaEdenClient
 
         private void MangaChapterList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            ListView view = sender as ListView;
+            DAO.MangaChapter mangaChapter = view.SelectedItem as DAO.MangaChapter;
+            Debug.WriteLine("ChapterID: " + mangaChapter.ChapterId);
+            Frame.Navigate(typeof(ChapterPage), new NavigationHelper(mangaChapter.ChapterId, IsFavorite, StoredManga.GetChapterIds()));
         }
     }
 }

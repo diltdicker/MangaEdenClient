@@ -12,7 +12,7 @@ namespace MangaEdenClient.DAO
 {
     class MangaChapter
     {
-        private List<BitmapImage> Images { get; set; }
+        public List<BitmapImage> Images { get; set; }
         public string ChapterId { get; set; }
         public double ChapterNumber { get; set; }
         public string Date { get; set; }
@@ -31,16 +31,16 @@ namespace MangaEdenClient.DAO
         /// Method to set the array of images for a chapter
         /// </summary>
         /// <param name="imageBufferArray">Must be in chronological order</param>
-        public async void SetImages(List<IBuffer> imageBufferArray)
-        {
-            Images = new List<BitmapImage>();
-            foreach (IBuffer imageBuffer in imageBufferArray)
-            {
-                BitmapImage image = new BitmapImage();
-                await image.SetSourceAsync(imageBuffer.AsStream().AsRandomAccessStream());
-                Images.Add(image);
-            }
-        }
+        //public async void SetImages(List<IBuffer> imageBufferArray)
+        //{
+        //    Images = new List<BitmapImage>();
+        //    foreach (IBuffer imageBuffer in imageBufferArray)
+        //    {
+        //        BitmapImage image = new BitmapImage();
+        //        await image.SetSourceAsync(imageBuffer.AsStream().AsRandomAccessStream());
+        //        Images.Add(image);
+        //    }
+        //}
 
         virtual public List<BitmapImage> GetImages()
         {

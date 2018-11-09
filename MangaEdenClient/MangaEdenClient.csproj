@@ -109,12 +109,14 @@
     <Compile Include="DAO\MangaStorageChapter.cs" />
     <Compile Include="DAO\Sanitize.cs" />
     <Compile Include="HTTP\HttpWrapper.cs" />
+    <Compile Include="ImageHolder.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="MangaPage.xaml.cs">
       <DependentUpon>MangaPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NavigationHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TopMenuPage.xaml.cs">
       <DependentUpon>TopMenuPage.xaml</DependentUpon>
