@@ -142,7 +142,7 @@ namespace MangaEdenClient.HTTP
                         Author = jsonManga.author,
                         Description = jsonManga.description
                     };
-                    manga.Description = manga.Description.Replace("&#039;", "'");
+                    manga.Description = manga.Description.Replace("&#039;", "'").Replace("&quot;", "\"").Replace("&#333;", "ō");
                     //string text = "Early D: " + jsonManga.description;
                     //Debug.WriteLine(text);
                     manga.SetLastDate("" + jsonManga.last_chapter_date);
