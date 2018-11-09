@@ -9,6 +9,19 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <ListView Grid.Row="1" Name="MangaImageList" ItemsSource="{x:Bind observableImages}" >
+            <ListView.ItemTemplate>
+                <DataTemplate x:Name="MangaImageTemplate" x:DataType="local:ImageHolder">
+                    <Image Source="{x:Bind GetImage()}" Margin="0,0,10,0"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </Page>

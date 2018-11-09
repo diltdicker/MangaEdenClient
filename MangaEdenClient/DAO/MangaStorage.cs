@@ -48,5 +48,15 @@ namespace MangaEdenClient.DAO
                 callback.Invoke(image);
             }
         }
+
+        public List<string> GetChapterIds()
+        {
+            List<string> chapterIds = new List<string>();
+            foreach(MangaChapter chapter in Chapters)
+            {
+                chapterIds.Add(chapter.ChapterId);
+            }
+            return chapterIds;
+        }
     }
 }
