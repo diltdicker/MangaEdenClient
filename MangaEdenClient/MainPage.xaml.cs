@@ -34,6 +34,7 @@ namespace MangaEdenClient
         public static MainPage mainPage;
 
         private ObservableCollection<Manga> observableSearchResults = new ObservableCollection<Manga>();
+        private List<string> categoryList = new List<string>();
 
         public MainPage()
         {
@@ -93,6 +94,12 @@ namespace MangaEdenClient
         {
             string query = ((AutoSuggestBox)sender).Text;
             Debug.WriteLine("Entered:" + query);
+
+        }
+
+        private void CategoryButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
