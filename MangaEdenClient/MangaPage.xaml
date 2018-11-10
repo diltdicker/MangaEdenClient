@@ -20,16 +20,26 @@
         </Grid.ColumnDefinitions>
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
             <StackPanel Orientation="Vertical" Height="auto">
-                <Grid>
+                <Grid Margin="20,0,10,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="300"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
+                        <RowDefinition Height="80"/>
                     </Grid.RowDefinitions>
-                    <Image Grid.Column="0" Name="MangaImage" Width="300" Margin="20"/>
-                    <TextBlock Grid.Column="1" Name="MangaTitle" FontWeight="Bold"  Margin="40,0,20,0" TextWrapping="WrapWholeWords" VerticalAlignment="Center" FontSize="32"/>
+                    <Image Grid.Column="0" Grid.Row="0" Name="MangaImage" Width="300" Margin="0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="0" Name="MangaTitle" FontWeight="Bold"  Margin="40,0,20,0" TextWrapping="WrapWholeWords" VerticalAlignment="Center" FontSize="32"/>
+                    <Button Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Name="FavoriteButton" Click="FavoriteButton_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <FontIcon Name="EmptyHeart" FontFamily="Segoe MDL2 Assets" Glyph="&#xEB51;" Foreground="Black" Visibility="Visible"/>
+                            <FontIcon Name="FavoriteHeart" FontFamily="Segoe MDL2 Assets" Glyph="&#xEB52;" Foreground="Red" Visibility="Collapsed"/>
+                            <TextBlock Name="FavoriteText" Text="Favorite" Margin="20,0,0,0"/>
+                        </StackPanel>
+                    </Button>
+                    <!--<ProgressRing Name="SavingMangaProgress" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Visible" IsActive="False"/>-->
+                    <ProgressBar Name="SavingMangaProgress" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsIndeterminate="True" Visibility="Collapsed"/>
                 </Grid>
                 <StackPanel Orientation="Vertical" Height="auto">
                     <TextBlock Name="MangaDescription" TextWrapping="WrapWholeWords" Margin="20"/>

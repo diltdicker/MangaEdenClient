@@ -39,12 +39,12 @@ namespace MangaEdenClient
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            Debug.WriteLine("Navigated");
+            //Debug.WriteLine("Navigated");
 
             NavigationHelper helper = e.Parameter as NavigationHelper;
             ChapterId = helper.IdString;
             IsFavorite = helper.Conditional;
-            Debug.WriteLine("after navigate: " + ChapterId);
+            //Debug.WriteLine("after navigate: " + ChapterId);
             ChapterIdList = helper.DataObject as List<string>;
 
             // IF IS Favorite take from DB
@@ -60,7 +60,7 @@ namespace MangaEdenClient
                 }
                 else
                 {
-                    Debug.WriteLine("putting images up");
+                    //Debug.WriteLine("putting images up");
                     List<BitmapImage> images = chapter.GetImages();
                     for (int i = 0; i < images.Count; i++)
                     {

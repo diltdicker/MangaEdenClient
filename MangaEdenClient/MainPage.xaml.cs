@@ -19,6 +19,7 @@ using Windows.UI.ViewManagement;
 using Windows.UI;
 using Windows.ApplicationModel.Core;
 using MangaEdenClient.DAO;
+using System.Collections.ObjectModel;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -32,10 +33,12 @@ namespace MangaEdenClient
     {
         public static MainPage mainPage;
 
+        private ObservableCollection<Manga> observableSearchResults = new ObservableCollection<Manga>();
+
         public MainPage()
         {
             mainPage = this;
-            Debug.WriteLine("test");
+            //Debug.WriteLine("test");
             this.InitializeComponent();
 
             ApplicationViewTitleBar formattableTitleBar = ApplicationView.GetForCurrentView().TitleBar;
@@ -79,6 +82,17 @@ namespace MangaEdenClient
             {
                 DBUpdateProgress.Visibility = Visibility.Collapsed;
             }
+        }
+
+        private void SearchResultList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Debug.WriteLine("selected result");
+        }
+
+        private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            string query = ((AutoSuggestBox)sender).Text;
+            Debug.WriteLine("Entered:" + query);
         }
     }
 }

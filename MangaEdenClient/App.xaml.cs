@@ -115,17 +115,17 @@ namespace MangaEdenClient
                 SqliteCommand createMangaCategoryTable = new SqliteCommand(INIT_MANGA_CATEGORY_TABLE, db);
                 try
                 {
-                    Debug.WriteLine("Manga Table");
+                    //Debug.WriteLine("Manga Table");
                     createMangaTable.ExecuteReader();
-                    Debug.WriteLine("Manga Chapter Table");
+                    //Debug.WriteLine("Manga Chapter Table");
                     createMangaChapterTable.ExecuteReader();
-                    Debug.WriteLine("Manga C Image Table");
+                    //Debug.WriteLine("Manga C Image Table");
                     createMangaChapterImageTable.ExecuteReader();
-                    Debug.WriteLine("Manga F Table");
+                    //Debug.WriteLine("Manga F Table");
                     createFavoriteTable.ExecuteReader();
-                    Debug.WriteLine("Manga H Table");
+                    //Debug.WriteLine("Manga H Table");
                     createHistoryTable.ExecuteReader();
-                    Debug.WriteLine("Manga Category Table");
+                    //Debug.WriteLine("Manga Category Table");
                     createMangaCategoryTable.ExecuteReader();
                 }
                 catch (SqliteException e)
