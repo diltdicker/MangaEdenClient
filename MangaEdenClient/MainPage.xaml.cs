@@ -20,6 +20,7 @@ using Windows.UI;
 using Windows.ApplicationModel.Core;
 using MangaEdenClient.DAO;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -34,6 +35,7 @@ namespace MangaEdenClient
         public static MainPage mainPage;
 
         private ObservableCollection<Manga> observableSearchResults = new ObservableCollection<Manga>();
+        private ObservableCollection<String> observableCategories = new ObservableCollection<string>();
         private List<string> categoryList = new List<string>();
 
         public MainPage()
@@ -51,6 +53,8 @@ namespace MangaEdenClient
 
             // Default switch frame to top menu
             MangaFrame.Navigate(typeof(TopMenuPage));
+
+            Task.Run(() => SetCategories());
         }
 
         private void BackFrameButton_Click(object sender, RoutedEventArgs e)
@@ -88,18 +92,65 @@ namespace MangaEdenClient
         private void SearchResultList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Debug.WriteLine("selected result");
+            Manga manga = (sender as ListView).SelectedItem as Manga;
+            if (manga != null)
+            {
+                MangaFrame.Navigate(typeof(MangaPage), manga.Id);
+                SearchFlyout.Hide();
+            }
+            
         }
 
         private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
             string query = ((AutoSuggestBox)sender).Text;
             Debug.WriteLine("Entered:" + query);
-
+            MangaFrame.Navigate(typeof(ResultPage), new NavigationHelper(query, true, null));
+            SearchFlyout.Hide();
         }
 
-        private void CategoryButton_Click(object sender, RoutedEventArgs e)
+        private async Task SetCategories()
         {
+            List<string> categories = await new CategoryDao().GetAllCategories();
+            await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                foreach(string category in categories)
+                {
+                    observableCategories.Add(category);
+                }
+            });
+        }
 
+        private void CategoryList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string category = ((string)((ListView)sender).SelectedItem);
+            Debug.WriteLine("Entered:" + category);
+            MangaFrame.Navigate(typeof(CategoryPage), category);
+            SearchFlyout.Hide();
+        }
+
+        private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            observableSearchResults.Clear();
+            Debug.WriteLine("tc:" + sender.Text);
+            string query = sender.Text;
+            if (sender.Text.Length > 2)
+            {
+                Debug.WriteLine("execute search:" + query);
+                Task.Run(async () =>
+                {
+                    List<Manga> mangas = await new MangaDao().SearchMangaAsync(query);
+                    Debug.WriteLine("mangasize= " + mangas.Count);
+                    await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                    {
+                        observableSearchResults.Clear();
+                        foreach (Manga manga in mangas)
+                        {
+                            observableSearchResults.Add(manga);
+                        }
+                    });
+                });
+            }
         }
     }
 }

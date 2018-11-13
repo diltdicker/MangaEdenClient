@@ -35,7 +35,7 @@
                             <ColumnDefinition Width="240"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Row="1" VerticalAlignment="Center" TextAlignment="Center" TextWrapping="WrapWholeWords" Text="{x:Bind Title}" FontWeight="SemiBold"/>
-                        <Image Grid.Row="0" Source="{x:Bind getImage()}"/>
+                        <Image Grid.Row="0" Source="{x:Bind GetImage()}"/>
                     </Grid>
                 </DataTemplate>
             </GridView.ItemTemplate>

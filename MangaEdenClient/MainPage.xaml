@@ -26,22 +26,29 @@
             <RelativePanel Grid.Row="0" Margin="0,10,10,10">
                 <Button Name="SearchButton" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignHorizontalCenterWithPanel="True" Content="Search" Foreground="White">
                     <Button.Flyout>
-                        <Flyout Placement="Bottom">
+                        <Flyout x:Name="SearchFlyout" Placement="Bottom">
                             <StackPanel Orientation="Vertical" Width="Auto" MinWidth="300">
-                                <AutoSuggestBox Name="SearchBox" QuerySubmitted="SearchBox_QuerySubmitted"/>
-                                <Button Name="CategoryButton" Width="300" Content="Category" Click="CategoryButton_Click" Margin="0,10,0,0">
+                                <AutoSuggestBox Name="SearchBox" QuerySubmitted="SearchBox_QuerySubmitted" TextChanged="SearchBox_TextChanged"/>
+                                <Button Name="CategoryButton" HorizontalAlignment="Stretch" Content="Category" Margin="0,10,0,0">
                                     <Button.Flyout>
                                         <Flyout Placement="Right">
-                                            <StackPanel Orientation="Vertical" MinWidth="100">
+                                            <!--<StackPanel Orientation="Vertical" MinWidth="100">
                                                 <TextBlock Text="Test Categiry"/>
-                                            </StackPanel>
+                                            </StackPanel>-->
+                                            <ListView Name="CategoryList" ItemsSource="{x:Bind observableCategories}" SelectionChanged="CategoryList_SelectionChanged">
+                                                <ListView.ItemTemplate>
+                                                    <DataTemplate x:Name="Category" x:DataType="x:String">
+                                                        <TextBlock Text="{x:Bind}"/>
+                                                    </DataTemplate>
+                                                </ListView.ItemTemplate>
+                                            </ListView>
                                         </Flyout>
                                     </Button.Flyout>
                                 </Button>
                                 <ListView Name="SearchResultList" ItemsSource="{x:Bind observableSearchResults}" IsItemClickEnabled="True" SelectionChanged="SearchResultList_SelectionChanged" Margin="0,10,0,0">
                                     <ListView.ItemTemplate>
                                         <DataTemplate x:Name="ResultTemplate" x:DataType="dao:Manga">
-                                            <TextBlock Text="{x:Bind Title}" MinWidth="200" Margin="0,10,0,0"/>
+                                            <TextBlock Text="{x:Bind Title}" MinWidth="200"/>
                                         </DataTemplate>
                                     </ListView.ItemTemplate>
                                 </ListView>

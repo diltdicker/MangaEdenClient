@@ -101,9 +101,13 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CategoryPage.xaml.cs">
+      <DependentUpon>CategoryPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ChapterPage.xaml.cs">
       <DependentUpon>ChapterPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DAO\CategoryDao.cs" />
     <Compile Include="DAO\IMangaChapter.cs" />
     <Compile Include="DAO\IMangaChapterDao.cs" />
     <Compile Include="DAO\IMangaDao.cs" />
@@ -124,6 +128,9 @@
     </Compile>
     <Compile Include="NavigationHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResultPage.xaml.cs">
+      <DependentUpon>ResultPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TopMenuPage.xaml.cs">
       <DependentUpon>TopMenuPage.xaml</DependentUpon>
     </Compile>
@@ -152,6 +159,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="CategoryPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ChapterPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -161,6 +172,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="MangaPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ResultPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
