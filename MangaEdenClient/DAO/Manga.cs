@@ -56,7 +56,7 @@ namespace MangaEdenClient.DAO
             }
         }
 
-        public BitmapImage getImage()
+        public BitmapImage GetImage()
         {
             if (ImageString != null)
             {

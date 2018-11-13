@@ -47,7 +47,7 @@ namespace MangaEdenClient
                 {
                     InsertAndSortbyPopular(mangaList);
                     SortByPopular();
-                    Debug.WriteLine("Finished");
+                    //Debug.WriteLine("Finished");
                     if (App.FULL_UPDATE_FLAG)
                     {
                         App.FULL_UPDATE_FLAG = false;
@@ -66,7 +66,7 @@ namespace MangaEdenClient
         {
             //progress_Max = mangas.Count;
             //progress_Value = 0;
-            Debug.WriteLine("Worker thread");
+            //Debug.WriteLine("Worker thread");
             for (int i = 0; i < mangas.Count; i++)
             {
                 //Debug.WriteLine("Worker thread i: " + i);
@@ -76,7 +76,7 @@ namespace MangaEdenClient
                     MainPage.mainPage.UpdateProgress(i);
                 });
             }
-            Debug.WriteLine("After DB Update Loop");
+            //Debug.WriteLine("After DB Update Loop");
         }
 
         private async void TestProgress2(int max, Func<int, int, bool> calllback)
@@ -91,11 +91,11 @@ namespace MangaEdenClient
 
         private void MangaGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Debug.WriteLine("Test Clicked");
+            //Debug.WriteLine("Test Clicked");
             GridView grid = (GridView)sender;
             Manga manga = (Manga)grid.SelectedItem;
-            Debug.WriteLine(manga.Title);
-            Debug.WriteLine(manga.ToString());
+            //Debug.WriteLine(manga.Title);
+            //Debug.WriteLine(manga.ToString());
 
             //new DAO.MangaDao().CreateMangaAsync(manga);
             //new DAO.MangaDao().UpdateMangaAsync(manga);

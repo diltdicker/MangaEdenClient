@@ -44,6 +44,6 @@ namespace MangaEdenClient.DAO
 
         Task SearchMangaCategoryAsync(List<String> categories, Func<List<Manga>, bool> callback);
 
-        Task<List<Manga>> SearchMangaCategoryAsync(List<String> categories);
+        Task<List<Manga>> SearchMangaCategoryAsync(String category);
     }
 }

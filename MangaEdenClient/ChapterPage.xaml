@@ -10,16 +10,21 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="60"/>
+            <RowDefinition Height="75"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+        <RelativePanel Grid.Row="0" Background="LightGray">
+            <TextBlock RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignBottomWithPanel="True" Name="ChapterTitle" Text="{x:Bind chapterName}"/>
+            <TextBlock RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignTopWithPanel="True" Text="Test"/>
+        </RelativePanel>
+        <ProgressBar Grid.Row="1" Name="ChapterProgressBar" IsEnabled="True" Visibility="Collapsed" IsIndeterminate="False" Value="0" Maximum="100" Height="25" Margin="15"/>
         <ListView Grid.Row="1" Name="MangaImageList" ItemsSource="{x:Bind observableImages}" >
             <ListView.ItemTemplate>
-                <DataTemplate x:Name="MangaImageTemplate" x:DataType="local:ImageHolder">
-                    <Image Source="{x:Bind GetImage()}" Margin="0,0,10,0"/>
+                <DataTemplate x:Name="MangaImageTemplate" x:DataType="BitmapImage">
+                    <Image Source="{x:Bind}" Margin="0,0,10,0"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

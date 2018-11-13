@@ -279,15 +279,73 @@ namespace MangaEdenClient.DAO
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="title"></param>
+        /// <returns>List of Manga</returns>
         public async Task<List<Manga>> SearchMangaAsync(string title)
         {
+            Debug.WriteLine("Begin search");
+            List<Manga> mangas = new List<Manga>();
+            title = Sanitize.SanitizeString(title);
+            if (title == null)
+            {
+                return mangas;
+            }
             using (SqliteConnection db = new SqliteConnection(App.APP_DB_STRING))
             {
                 db.Open();
-                // TODO Code Goes Here
+                SqliteDataReader reader = null;
+                SqliteCommand searchCommand = new SqliteCommand
+                {
+                    Connection = db,
+                    CommandText = "SELECT manga_id, manga_title, alias, image_url, hits, last_chapter_date, " +
+                    "status FROM " + App.APP_MANGA_TABLE + " WHERE manga_title LIKE '%" + title + "%' COLLATE NOCASE ORDER BY hits DESC;"
+                };
+                //searchCommand.Parameters.AddWithValue("@TITLE", title);
+                try
+                {
+                    reader = await searchCommand.ExecuteReaderAsync();
+                }
+                catch (SqliteException e)
+                {
+                    Debug.WriteLine(e.StackTrace);
+                    Debug.WriteLine("SearchMangaAsync");
+                }
+                
+                if (reader != null)
+                {
+                    Debug.WriteLine("Reader found something");
+                    while (reader.Read())
+                    {
+                        Debug.WriteLine("read: " + reader.GetString(0));
+                        Manga manga = new Manga
+                        {
+                            Id = reader.GetString(0),
+                            Title = reader.GetString(1),
+                            Alias = reader.GetString(2),
+                            Hits = reader.GetInt32(4),
+                        };
+                        if (!reader.IsDBNull(3))
+                        {
+                            manga.ImageString = reader.GetString(3);
+                        }
+                        if (!reader.IsDBNull(5))
+                        {
+                            manga.LastDate = reader.GetString(5);
+                        }
+                        mangas.Add(manga);
+                    }
+                }
+                else
+                {
+                    Debug.WriteLine("Reader null");
+                }
+
                 db.Close();
             }
-            throw new NotImplementedException();
+            return mangas;
         }
 
         public async Task SearchMangaCategoryAsync(List<string> categories, Func<List<Manga>, bool> callback)
@@ -301,15 +359,57 @@ namespace MangaEdenClient.DAO
             throw new NotImplementedException();
         }
 
-        public async Task<List<Manga>> SearchMangaCategoryAsync(List<string> categories)
+        public async Task<List<Manga>> SearchMangaCategoryAsync(string category)
         {
+            List<Manga> mangas = new List<Manga>();
+            if (category == null)
+            {
+                return mangas;
+            }
             using (SqliteConnection db = new SqliteConnection(App.APP_DB_STRING))
             {
                 db.Open();
-                // TODO Code Goes Here
+                SqliteDataReader reader = null;
+                SqliteCommand searchCommand = new SqliteCommand();
+                searchCommand.Connection = db;
+                searchCommand.CommandText = "SELECT " + App.APP_MANGA_TABLE + ".manga_id, manga_title, alias, image_url, hits, last_chapter_date, " +
+                    "status FROM " + App.APP_MANGA_TABLE + " INNER JOIN " + App.APP_MANGA_CATEGORY_TABLE + " ON " + App.APP_MANGA_TABLE + ".manga_id = " + 
+                    App.APP_MANGA_CATEGORY_TABLE + ".manga_id WHERE category = @CATEGORY ORDER BY hits DESC;";
+                searchCommand.Parameters.AddWithValue("@CATEGORY", category);
+                try
+                {
+                    reader = await searchCommand.ExecuteReaderAsync();
+                }
+                catch(SqliteException e)
+                {
+                    Debug.WriteLine(e.StackTrace);
+                    Debug.WriteLine(e.TargetSite);
+                }
+                if (reader != null)
+                {
+                    while (reader.Read())
+                    {
+                        Manga manga = new Manga
+                        {
+                            Id = reader.GetString(0),
+                            Title = reader.GetString(1),
+                            Alias = reader.GetString(2),
+                            Hits = reader.GetInt32(4),
+                        };
+                        if (!reader.IsDBNull(3))
+                        {
+                            manga.ImageString = reader.GetString(3);
+                        }
+                        if (!reader.IsDBNull(5))
+                        {
+                            manga.LastDate = reader.GetString(5);
+                        }
+                        mangas.Add(manga);
+                    }
+                }
                 db.Close();
             }
-            throw new NotImplementedException();
+            return mangas;
         }
 
         /// <summary>
