@@ -29,9 +29,9 @@ namespace MangaEdenClient
     {
         ObservableCollection<BitmapImage> observableImages = new ObservableCollection<BitmapImage>();
         string ChapterId { get; set; }
-        string chapterName;
         bool IsFavorite { get; set; }
-        List<string> ChapterIdList { get; set; }
+        List<DAO.MangaChapter> ChapterList { get; set; }
+        int chapterIndex = -1;
 
         DAO.MangaStorageChapter Chapter { get; set; }
 
@@ -48,7 +48,16 @@ namespace MangaEdenClient
             ChapterId = helper.IdString;
             IsFavorite = helper.Conditional;
             //Debug.WriteLine("after navigate: " + ChapterId);
-            ChapterIdList = helper.DataObject as List<string>;
+            ChapterList = helper.DataObject as List<DAO.MangaChapter>;
+            for(int i = 0; i < ChapterList.Count; i++)
+            {
+                if (ChapterList[i].ChapterId.Equals(ChapterId))
+                {
+                    chapterIndex = i;
+                    break;
+                }
+            }
+            ChapterTitle.Text = ChapterList[chapterIndex].ChapterNumber.ToString();
 
             // IF IS Favorite take from DB
 
@@ -113,6 +122,23 @@ namespace MangaEdenClient
             //}
         }
 
+        private void NextChapterButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (chapterIndex - 1 >= 0)
+            {
+                Frame.Navigate(typeof(ChapterPage), new NavigationHelper(ChapterList[chapterIndex - 1].ChapterId, IsFavorite, ChapterList));
+            }
+        }
+
+        private void PreviousChapterButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (chapterIndex + 1 < ChapterList.Count)
+            {
+                Frame.Navigate(typeof(ChapterPage), new NavigationHelper(ChapterList[chapterIndex + 1].ChapterId, IsFavorite, ChapterList));
+            }
+        }
+    }
+
         //private async Task AssignImagesAsync()
         //{
         //    try
@@ -133,5 +159,4 @@ namespace MangaEdenClient
         //        Debug.WriteLine(e.TargetSite);
         //    }
         //}
-    }
 }

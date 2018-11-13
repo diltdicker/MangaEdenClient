@@ -85,7 +85,7 @@ namespace MangaEdenClient
             ListView view = sender as ListView;
             DAO.MangaChapter mangaChapter = view.SelectedItem as DAO.MangaChapter;
             //Debug.WriteLine("ChapterID: " + mangaChapter.ChapterId);
-            Frame.Navigate(typeof(ChapterPage), new NavigationHelper(mangaChapter.ChapterId, IsFavorite, StoredManga.GetChapterIds()));
+            Frame.Navigate(typeof(ChapterPage), new NavigationHelper(mangaChapter.ChapterId, IsFavorite, StoredManga.Chapters));
         }
 
         private void FavoriteButton_Click(object sender, RoutedEventArgs e)
