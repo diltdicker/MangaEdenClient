@@ -17,6 +17,9 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+        <RelativePanel Grid.Row="0" Background="LightGray">
+
+        </RelativePanel>
         <ListView Grid.Row="1" Grid.Column="0" Name="MangaResultList" ItemsSource="{x:Bind observableMangas}" SelectionChanged="MangaResultList_SelectionChanged">
             <ListView.ItemTemplate>
                 <DataTemplate x:Name="MangaTemplate" x:DataType="dao:Manga">

@@ -252,7 +252,169 @@ namespace MangaEdenClient.HTTP
 
         public async static void HttpGetMangaStorageChapterAsync(string chapterId, Func<DAO.MangaStorageChapter, bool> callback)
         {
+            DAO.MangaStorageChapter mangaChapter = null;
+            if (chapterId == null)
+            {
+                callback.Invoke(mangaChapter);
+            }
+            Uri uri = new Uri(API_STRING + "chapter/" + chapterId);
+            HttpClient client = new HttpClient();
+            String response = null;
+            try
+            {
+                response = await client.GetStringAsync(uri);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.StackTrace);
+            }
+            finally
+            {
+                if (response != null)
+                {
+                    /*
+                     *  0 - index
+                     *  1 - image string
+                     */
+                    dynamic jsonChapter = JsonConvert.DeserializeObject(response);
+                    mangaChapter = new DAO.MangaStorageChapter()
+                    {
+                        ChapterId = chapterId
+                    };
+                    for (int i = jsonChapter.images.Count - 1; i >= 0; i--)                      // should put it in correct order
+                    {
+                        HttpClient httpClient = new HttpClient();
+                        IBuffer buffer = null;
+                        BitmapImage image = new BitmapImage();
+                        string imageString = jsonChapter.images[i][1];
+                        if (imageString != null)
+                        {
+                            try
+                            {
+                                buffer = await httpClient.GetBufferAsync(new Uri(API_IMG_STRING + imageString));
+                                //await image.SetSourceAsync(buffer.AsStream().AsRandomAccessStream());
 
+                            }
+                            catch(Exception e)
+                            {
+                                Debug.WriteLine(e.StackTrace);
+                                Debug.WriteLine(e.TargetSite);
+                            }
+                        }
+                        mangaChapter.ImageBufferList.Add(buffer);
+                        //mangaChapter.Images.Add(image);
+                    }
+                }
+            }
+            callback.Invoke(mangaChapter);
+        }
+
+        public async static void HttpGetMangaStorageChapterAsync(string chapterId, Func<int,int,bool> progress,  Func<DAO.MangaStorageChapter, bool> callback)
+        {
+            DAO.MangaStorageChapter mangaChapter = null;
+            if (chapterId == null)
+            {
+                return;
+            }
+            Uri uri = new Uri(API_STRING + "chapter/" + chapterId);
+            HttpClient client = new HttpClient();
+            String response = null;
+            try
+            {
+                response = await client.GetStringAsync(uri);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.StackTrace);
+            }
+            if (response != null)
+            {
+                /*
+                     *  0 - index
+                     *  1 - image string
+                     */
+                dynamic jsonChapter = JsonConvert.DeserializeObject(response);
+                mangaChapter = new DAO.MangaStorageChapter()
+                {
+                    ChapterId = chapterId
+                };
+                int progressMax = (jsonChapter.images.Count - 1) * 2;
+                int proggressValue = 0;
+                for (int i = jsonChapter.images.Count - 1; i >= 0; i--)                      // should put it in correct order
+                {
+                    progress.Invoke(proggressValue, i);
+                    HttpClient httpClient = new HttpClient();
+                    IBuffer buffer = null;
+                    BitmapImage image = new BitmapImage();
+                    string imageString = jsonChapter.images[i][1];
+                    if (imageString != null)
+                    {
+                        try
+                        {
+                            buffer = await httpClient.GetBufferAsync(new Uri(API_IMG_STRING + imageString));
+                            await image.SetSourceAsync(buffer.AsStream().AsRandomAccessStream());
+
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.WriteLine(e.StackTrace);
+                            Debug.WriteLine(e.TargetSite);
+                        }
+                    }
+                    mangaChapter.ImageBufferList.Add(buffer);
+                    mangaChapter.Images.Add(image);
+                    proggressValue++;
+                }
+            }
+            callback.Invoke(mangaChapter);
+        }
+
+        public async static void HttpGetChapterImagesAsync(string chapterId, Func<BitmapImage,bool> imageCallback)
+        {
+            if (chapterId == null)
+            {
+                return;
+            }
+            Uri uri = new Uri(API_STRING + "chapter/" + chapterId);
+            HttpClient client = new HttpClient();
+            String response = null;
+            try
+            {
+                response = await client.GetStringAsync(uri);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.StackTrace);
+            }
+            if (response != null)
+            {
+                /*
+                     *  0 - index
+                     *  1 - image string
+                     */
+                dynamic jsonChapter = JsonConvert.DeserializeObject(response);
+                for (int i = jsonChapter.images.Count - 1; i >= 0; i--)                      // should put it in correct order
+                {
+                    HttpClient httpClient = new HttpClient();
+                    IBuffer buffer = null;
+                    BitmapImage image = new BitmapImage();
+                    string imageString = jsonChapter.images[i][1];
+                    if (imageString != null)
+                    {
+                        try
+                        {
+                            buffer = await httpClient.GetBufferAsync(new Uri(API_IMG_STRING + imageString));
+                            await image.SetSourceAsync(buffer.AsStream().AsRandomAccessStream());
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.WriteLine(e.StackTrace);
+                            Debug.WriteLine(e.TargetSite);
+                        }
+                    }
+                    imageCallback.Invoke(image);
+                }
+            }
         }
 
         /// <summary>

@@ -11,13 +11,15 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="60"/>
+            <RowDefinition Height="75"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+        <RelativePanel Grid.Row="0" Background="LightGray">
+
+        </RelativePanel>
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
             <StackPanel Orientation="Vertical" Height="auto">
                 <Grid Margin="20,0,10,0">

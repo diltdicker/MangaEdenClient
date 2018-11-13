@@ -60,7 +60,11 @@ namespace MangaEdenClient
 
         private void GridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            DAO.Manga manga = (sender as GridView).SelectedItem as DAO.Manga;
+            if (manga != null)
+            {
+                Frame.Navigate(typeof(MangaPage), manga.Id);
+            }
         }
     }
 }

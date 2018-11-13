@@ -13,10 +13,14 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+        <RelativePanel Grid.Row="0" Background="LightGray">
+            
+        </RelativePanel>
         <GridView Grid.Row="1" Grid.Column="0" ItemsSource="{x:Bind observableMangas}" SelectionChanged="GridView_SelectionChanged">
             <GridView.ItemTemplate>
                 <DataTemplate x:Name="Manga" x:DataType="dao:Manga">
@@ -34,5 +38,8 @@
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
+        <RelativePanel Grid.Row="2" Background="LightGray">
+
+        </RelativePanel>
     </Grid>
 </Page>

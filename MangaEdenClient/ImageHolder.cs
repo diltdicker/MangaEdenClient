@@ -17,6 +17,11 @@ namespace MangaEdenClient
 
         }
 
+        public ImageHolder (ref BitmapImage image)
+        {
+            Image = image;
+        }
+
         public ImageHolder(BitmapImage image, int index)
         {
             Image = image;
