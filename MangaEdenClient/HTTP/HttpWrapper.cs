@@ -79,29 +79,38 @@ namespace MangaEdenClient.HTTP
             {
                 if (response != null)
                 {
-                    dynamic jsonMangas = JsonConvert.DeserializeObject(response);
-                    for (int i = 0; i < jsonMangas.manga.Count; i++)
+                    dynamic jsonMangas = null;
+                    try
                     {
-                        //Debug.WriteLine("json: i: " + i);
-                        DAO.Manga manga = new DAO.Manga
+                        jsonMangas = JsonConvert.DeserializeObject(response);
+                        for (int i = 0; i < jsonMangas.manga.Count; i++)
                         {
-                            Id = jsonMangas.manga[i].i,
-                            Title = jsonMangas.manga[i].t,
-                            Alias = jsonMangas.manga[i].a,
-                            ImageString = jsonMangas.manga[i].im,
-                            Hits = jsonMangas.manga[i].h,
-                        };
-                        manga.SetLastDate("" + jsonMangas.manga[i].ld);
-                        manga.SetStatus((int)jsonMangas.manga[i].s);
-                        if (manga.ImageString != null)
-                        {
-                            manga.ImageString = API_IMG_STRING + manga.ImageString;
+                            //Debug.WriteLine("json: i: " + i);
+                            DAO.Manga manga = new DAO.Manga
+                            {
+                                Id = jsonMangas.manga[i].i,
+                                Title = jsonMangas.manga[i].t,
+                                Alias = jsonMangas.manga[i].a,
+                                ImageString = jsonMangas.manga[i].im,
+                                Hits = jsonMangas.manga[i].h,
+                            };
+                            manga.SetLastDate("" + jsonMangas.manga[i].ld);
+                            manga.SetStatus((int)jsonMangas.manga[i].s);
+                            if (manga.ImageString != null)
+                            {
+                                manga.ImageString = API_IMG_STRING + manga.ImageString;
+                            }
+                            for (int k = 0; k < jsonMangas.manga[i].c.Count; k++)
+                            {
+                                manga.Categories.Add((string)jsonMangas.manga[i].c[k]);
+                            }
+                            mangas.Add(manga);
                         }
-                        for (int k = 0; k < jsonMangas.manga[i].c.Count; k++)
-                        {
-                            manga.Categories.Add((string)jsonMangas.manga[i].c[k]);
-                        }
-                        mangas.Add(manga);
+                    }
+                    catch(Exception e)
+                    {
+                        Debug.WriteLine(e.StackTrace);
+                        Debug.WriteLine(e.TargetSite);
                     }
                 }
             }

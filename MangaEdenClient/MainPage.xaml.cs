@@ -111,8 +111,9 @@ namespace MangaEdenClient
 
         public async Task SetCategories()
         {
-            List<string> categories = await new CategoryDao().GetAllCategories();
             observableCategories.Clear();
+            observableCategories = new ObservableCollection<string>();
+            List<string> categories = await new CategoryDao().GetAllCategories();
             await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
                 foreach(string category in categories)
