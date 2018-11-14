@@ -18,10 +18,12 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <RelativePanel Grid.Row="0" Background="LightGray">
-            
+        <RelativePanel Name="TopMenu" Grid.Row="0" Grid.Column="0" Background="LightGray">
+            <Button Name="SortPopular" Margin="10" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignBottomWithPanel="True" Content="Popular" Click="SortPopular_Click" Background="LightGray"/>
+            <Button Name="SortAlphabetical" Margin="10" RelativePanel.RightOf="SortPopular" RelativePanel.AlignBottomWithPanel="True" Content="Alphabetical" Click="SortAlphabetical_Click" Background="LightGray"/>
+            <Button Name="SortRecent" Margin="10" RelativePanel.RightOf="SortAlphabetical" RelativePanel.AlignBottomWithPanel="True" Content="Updated" Click="SortRecent_Click" Background="LightGray"/>
         </RelativePanel>
-        <GridView Grid.Row="1" Grid.Column="0" ItemsSource="{x:Bind observableMangas}" SelectionChanged="GridView_SelectionChanged">
+        <GridView Grid.Row="1" Grid.Column="0" ItemsSource="{x:Bind observableManga}" SelectionChanged="GridView_SelectionChanged">
             <GridView.ItemTemplate>
                 <DataTemplate x:Name="Manga" x:DataType="dao:Manga">
                     <Grid Background="White">

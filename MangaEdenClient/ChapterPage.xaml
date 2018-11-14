@@ -26,10 +26,10 @@
             </Button>
         </RelativePanel>
         <ProgressBar Grid.Row="1" Name="ChapterProgressBar" IsEnabled="True" Visibility="Collapsed" IsIndeterminate="False" Value="0" Maximum="100" Height="25" Margin="15"/>
-        <ListView Grid.Row="1" Name="MangaImageList" ItemsSource="{x:Bind observableImages}" >
+        <ListView Grid.Row="1" Name="MangaImageList" ItemsSource="{x:Bind observableImages}">
             <ListView.ItemTemplate>
                 <DataTemplate x:Name="MangaImageTemplate" x:DataType="BitmapImage">
-                    <Image Source="{x:Bind}" Margin="0,0,10,0"/>
+                    <Image Source="{x:Bind}"/>                                                                    <!-- Encountered Error with really big Image Sizes : they crash the program (e.g. girls of the wild's) -->
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

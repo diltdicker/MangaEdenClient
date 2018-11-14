@@ -33,7 +33,7 @@ namespace MangaEdenClient
     public sealed partial class MainPage : Page
     {
         public static MainPage mainPage;
-
+        //private bool categoryClearFlag = true;
         private ObservableCollection<Manga> observableSearchResults = new ObservableCollection<Manga>();
         private ObservableCollection<String> observableCategories = new ObservableCollection<string>();
         private List<string> categoryList = new List<string>();
@@ -109,9 +109,10 @@ namespace MangaEdenClient
             SearchFlyout.Hide();
         }
 
-        private async Task SetCategories()
+        public async Task SetCategories()
         {
             List<string> categories = await new CategoryDao().GetAllCategories();
+            observableCategories.Clear();
             await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
                 foreach(string category in categories)
@@ -123,10 +124,13 @@ namespace MangaEdenClient
 
         private void CategoryList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string category = ((string)((ListView)sender).SelectedItem);
-            Debug.WriteLine("Entered:" + category);
-            MangaFrame.Navigate(typeof(CategoryPage), category);
-            SearchFlyout.Hide();
+            if (((ListView)sender).SelectedItem is string category)
+            {
+                Debug.WriteLine("Entered:" + category);
+                MangaFrame.Navigate(typeof(CategoryPage), category);
+                SearchFlyout.Hide();
+                ((ListView)sender).SelectedIndex = -1;
+            }
         }
 
         private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
@@ -151,6 +155,16 @@ namespace MangaEdenClient
                     });
                 });
             }
+        }
+
+        private void HomeButton_Click(object sender, RoutedEventArgs e)
+        {
+            //while (MangaFrame.CanGoBack)
+            //{
+            //    MangaFrame.GoBack();
+            //}
+
+            MangaFrame.Navigate(typeof(TopMenuPage));
         }
     }
 }
