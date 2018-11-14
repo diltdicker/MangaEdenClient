@@ -36,7 +36,7 @@ namespace MangaEdenClient
 
         protected override void OnNavigatedTo(NavigationEventArgs e)                            // Happens after TopMenuPage()
         {
-            HTTP.HttpWrapper.HttpGetMangaListAsync(-1, -1, (List<DAO.Manga> mangaList) =>
+            HTTP.HttpWrapper.HttpGetMangaListAsync(-1, -1, (List<Manga> mangaList) =>
             {
                 if (mangaList == null || mangaList.Count == 0)
                 {
@@ -77,6 +77,7 @@ namespace MangaEdenClient
                 });
             }
             //Debug.WriteLine("After DB Update Loop");
+            await MainPage.mainPage.SetCategories();
         }
 
         private async void TestProgress2(int max, Func<int, int, bool> calllback)

@@ -17,14 +17,19 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <RelativePanel Grid.Row="0" Background="LightGray">
-            <TextBlock RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignBottomWithPanel="True" Name="ChapterTitle" Text="{x:Bind chapterName}"/>
-            <TextBlock RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignTopWithPanel="True" Text="Test"/>
+            <TextBlock RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignBottomWithPanel="True" Name="ChapterTitle" Height="25" Margin="20,0,20,0"/>
+            <Button RelativePanel.AlignBottomWithPanel="True" RelativePanel.RightOf="ChapterTitle" Name="NextChapterButton" Click="NextChapterButton_Click">
+                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE72A;"/>
+            </Button>
+            <Button RelativePanel.AlignBottomWithPanel="True" RelativePanel.LeftOf="ChapterTitle" Name="PreviousChapterButton" Click="PreviousChapterButton_Click">
+                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE72B;"/>
+            </Button>
         </RelativePanel>
         <ProgressBar Grid.Row="1" Name="ChapterProgressBar" IsEnabled="True" Visibility="Collapsed" IsIndeterminate="False" Value="0" Maximum="100" Height="25" Margin="15"/>
-        <ListView Grid.Row="1" Name="MangaImageList" ItemsSource="{x:Bind observableImages}" >
+        <ListView Grid.Row="1" Name="MangaImageList" ItemsSource="{x:Bind observableImages}">
             <ListView.ItemTemplate>
                 <DataTemplate x:Name="MangaImageTemplate" x:DataType="BitmapImage">
-                    <Image Source="{x:Bind}" Margin="0,0,10,0"/>
+                    <Image Source="{x:Bind}"/>                                                                    <!-- Encountered Error with really big Image Sizes : they crash the program (e.g. girls of the wild's) -->
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

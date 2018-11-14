@@ -19,12 +19,13 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="75"/>
+                <RowDefinition Height="100"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
             <RelativePanel Grid.Row="0" Margin="0,10,10,10">
-                <Button Name="SearchButton" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignHorizontalCenterWithPanel="True" Content="Search" Foreground="White">
+                
+                <Button Name="SearchButton" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignHorizontalCenterWithPanel="True" Content="Search" Foreground="White" Width="150">
                     <Button.Flyout>
                         <Flyout x:Name="SearchFlyout" Placement="Bottom">
                             <StackPanel Orientation="Vertical" Width="Auto" MinWidth="300">
@@ -56,12 +57,14 @@
                         </Flyout>
                     </Button.Flyout>
                 </Button>
-                <Button Name="BackFrameButton" Click="BackFrameButton_Click" RelativePanel.LeftOf="SearchButton" RelativePanel.AlignVerticalCenterWith="SearchButton" Foreground="White">
+                <Button Name="HomeButton" Click="HomeButton_Click" RelativePanel.Above="SearchButton" RelativePanel.AlignHorizontalCenterWithPanel="True" Foreground="White" Content="Home" Width="70"/>
+                <Button Name="BackFrameButton" Click="BackFrameButton_Click" RelativePanel.LeftOf="HomeButton" RelativePanel.AlignVerticalCenterWith="HomeButton" Foreground="White" Width="40">
                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE72B;"/>
                 </Button>
-                <Button Name="ForwardFrameButton" Click="ForwardFrameButton_Click" RelativePanel.RightOf="SearchButton" RelativePanel.AlignVerticalCenterWith="SearchButton" Foreground="White">
+                <Button Name="ForwardFrameButton" Click="ForwardFrameButton_Click" RelativePanel.RightOf="HomeButton" RelativePanel.AlignVerticalCenterWith="HomeButton" Foreground="White" Width="40">
                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE72A;"/>
                 </Button>
+                
             </RelativePanel>
             <ProgressBar Grid.Row="2" Name="DBUpdateProgress" Maximum="0" Minimum="0" Value="0" Visibility="Collapsed" Margin="20,0,20,0" VerticalAlignment="Center"/>
         </Grid>

@@ -142,7 +142,7 @@ namespace MangaEdenClient
 
             //
             //  Aplication Resizing
-            //
+            ////
             ApplicationView.PreferredLaunchViewSize = new Size(1024, 768);
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
         }

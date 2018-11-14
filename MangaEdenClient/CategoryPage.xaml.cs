@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MangaEdenClient.DAO;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -26,7 +27,7 @@ namespace MangaEdenClient
     public sealed partial class CategoryPage : Page
     {
 
-        ObservableCollection<DAO.Manga> observableMangas = new ObservableCollection<DAO.Manga>(); 
+        ObservableCollection<DAO.Manga> observableManga = new ObservableCollection<DAO.Manga>(); 
 
         public CategoryPage()
         {
@@ -47,7 +48,7 @@ namespace MangaEdenClient
                     {
                         foreach (DAO.Manga manga in mangas)
                         {
-                            observableMangas.Add(manga);
+                            observableManga.Add(manga);
                         }
                     });
                 });
@@ -64,6 +65,51 @@ namespace MangaEdenClient
             if (manga != null)
             {
                 Frame.Navigate(typeof(MangaPage), manga.Id);
+            }
+        }
+
+        private void SortPopular_Click(object sender, RoutedEventArgs e)
+        {
+            SortByPopular();
+        }
+
+        private void SortAlphabetical_Click(object sender, RoutedEventArgs e)
+        {
+            SortByAlphabet();
+        }
+
+        private void SortRecent_Click(object sender, RoutedEventArgs e)
+        {
+            SortByRecent();
+        }
+
+        private void SortByRecent()
+        {
+            List<Manga> mangas = observableManga.OrderByDescending(manga => manga.LastDate).ToList();
+            observableManga.Clear();
+            foreach (Manga manga in mangas)
+            {
+                observableManga.Add(manga);
+            }
+        }
+
+        private void SortByAlphabet()
+        {
+            List<Manga> mangas = observableManga.OrderBy(manga => manga.Alias).ToList();
+            observableManga.Clear();
+            foreach (Manga manga in mangas)
+            {
+                observableManga.Add(manga);
+            }
+        }
+
+        private void SortByPopular()
+        {
+            List<Manga> mangas = observableManga.OrderByDescending(manga => manga.Hits).ToList();
+            observableManga.Clear();
+            foreach (Manga manga in mangas)
+            {
+                observableManga.Add(manga);
             }
         }
     }
